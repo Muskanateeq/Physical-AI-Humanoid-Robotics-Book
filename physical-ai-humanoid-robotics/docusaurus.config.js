@@ -21,10 +21,11 @@ const config = {
   },
 
   // Set the production url of your site here
-  url: "https://physical-ai-muskanateeq.org",
+  url: "https://muskanateeq.github.io",
   // Set the /<baseUrl>/ pathname under which your site is served
   // For GitHub pages deployment, it is often '/<projectName>/'
-  baseUrl: "/",
+  baseUrl: "/Physical-AI-Humanoid-Robotics-Book/",
+  trailingSlash: true,
 
   // GitHub pages deployment config.
   // If you aren't using GitHub pages, you don't need these.
