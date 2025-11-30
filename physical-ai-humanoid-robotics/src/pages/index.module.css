@@ -1,0 +1,111 @@
+/**
+ * CSS files with the .module.css suffix will be treated as CSS modules
+ * and scoped locally.
+ */
+
+.heroBanner {
+    padding: 4rem 0;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    display: flex; /* Make heroBanner a flex container */
+    justify-content: center; /* Center its content */
+    align-items: center; /* Vertically align its content */
+    min-height: 70vh; /* Ensure it takes up a good portion of the viewport height */
+    background-color: dimgrey;
+}
+
+.heroContainer {
+    display: flex;
+    flex-direction: row; /* Default to row layout for larger screens */
+    align-items: center;
+    justify-content: space-around;
+    width: 100%;
+    max-width: var(--ifm-container-width); /* Use Docusaurus container width */
+}
+
+.heroTextContent {
+    flex: 1; /* Allow text content to take available space */
+    padding: 0 20px;
+    text-align: left;
+}
+
+.bookTitle {
+    font-size: 3rem;
+    font-weight: 700;
+    color: var(--ifm-hero-text-color);
+    margin-bottom: 1rem;
+}
+
+.bookDescription {
+    font-size: 1.3rem;
+    color: var(--ifm-hero-text-color);
+    margin-bottom: 2rem;
+}
+
+.heroImageContent {
+    flex: 1; /* Allow image content to take available space */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0 20px;
+}
+
+.bookVisual {
+    width: 100%;
+    max-width: 350px; /* Max width for the book image */
+    height: auto;
+    border-radius: 8px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s ease-in-out;
+}
+
+.bookVisual:hover {
+    transform: translateY(-5px);
+}
+
+.bookVisualTitle {
+    margin-top: 1rem;
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--ifm-hero-text-color);
+}
+
+@media screen and (max-width: 996px) {
+    .heroBanner {
+        padding: 2rem;
+        min-height: auto;
+    }
+
+    .heroContainer {
+        flex-direction: column; /* Stack columns vertically on smaller screens */
+    }
+
+    .heroTextContent {
+        text-align: center;
+        padding: 0 10px;
+        margin-bottom: 2rem;
+    }
+
+    .bookTitle {
+        font-size: 2.5rem;
+    }
+
+    .bookDescription {
+        font-size: 1.1rem;
+    }
+
+    .heroImageContent {
+        padding: 0 10px;
+    }
+
+    .bookVisual {
+        max-width: 250px;
+    }
+}
+
+.buttons {
+    display: flex;
+    align-items: left;
+    justify-content: left;
+}
