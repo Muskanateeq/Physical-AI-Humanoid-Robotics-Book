@@ -1,0 +1,66 @@
+{
+  "link.title.Course Content": {
+    "message": "کورس مواد",
+    "description": "The title of the footer links column with title=Course Content in the footer"
+  },
+  "link.title.Projects": {
+    "message": "پروجیکٹس",
+    "description": "The title of the footer links column with title=Projects in the footer"
+  },
+  "link.title.Resources": {
+    "message": "وسائل",
+    "description": "The title of the footer links column with title=Resources in the footer"
+  },
+  "link.item.label.Course Modules1": {
+    "message": "کورس ماڈیول 1",
+    "description": "The label of footer link with label=Course Modules1 linking to /docs/module-1-ros2/robotic-system"
+  },
+  "link.item.label.Course Modules2": {
+    "message": "کورس ماڈیول 2",
+    "description": "The label of footer link with label=Course Modules2 linking to /docs/module-2-simulation/digital-twin-concepts-gazebo-humanoid"
+  },
+  "link.item.label.Course Modules3": {
+    "message": "کورس ماڈیول 3",
+    "description": "The label of footer link with label=Course Modules3 linking to /docs/module-3-aibrain/isaac-sim-environment"
+  },
+  "link.item.label.Course Modules4": {
+    "message": "کورس ماڈیول 4",
+    "description": "The label of footer link with label=Course Modules4 linking to /docs/module-4-vla/vla-introduction-and-voice"
+  },
+  "link.item.label.Module1 Mini Project": {
+    "message": "ماڈیول 1 منی پروجیکٹ",
+    "description": "The label of footer link with label=Module1 Mini Project linking to /docs/module-1-ros2/urdf-humanoids"
+  },
+  "link.item.label.Module2 Mini Project": {
+    "message": "ماڈیول 2 منی پروجیکٹ",
+    "description": "The label of footer link with label=Module2 Mini Project linking to /docs/module-2-simulation/module-2-mini-project"
+  },
+  "link.item.label.Module3 Mini Project": {
+    "message": "ماڈیول 3 منی پروجیکٹ",
+    "description": "The label of footer link with label=Module3 Mini Project linking to /docs/module-3-aibrain/nav2-and-mini-project"
+  },
+  "link.item.label.Module4 Capstone Project": {
+    "message": "ماڈیول 4 کیپ اسٹون پروجیکٹ",
+    "description": "The label of footer link with label=Module4 Capstone Project linking to /docs/module-4-vla/ros2-execution-and-capstone"
+  },
+  "link.item.label.GitHub": {
+    "message": "GitHub",
+    "description": "The label of footer link with label=GitHub linking to https://github.com/Muskanateeq/Physical-AI-Humanoid-Robotics-Book"
+  },
+  "link.item.label.ROS 2": {
+    "message": "ROS 2",
+    "description": "The label of footer link with label=ROS 2 linking to https://docs.ros.org/en/humble/"
+  },
+  "link.item.label.NVIDIA Isaac": {
+    "message": "NVIDIA Isaac",
+    "description": "The label of footer link with label=NVIDIA Isaac linking to https://developer.nvidia.com/isaac/sim"
+  },
+  "link.item.label.Gazebo": {
+    "message": "Gazebo",
+    "description": "The label of footer link with label=Gazebo linking to https://gazebosim.org/home"
+  },
+  "copyright": {
+    "message": "Copyright © 2026 Neurobotics. فزیکل AI اور ہیومنائیڈ روبوٹکس۔ بنایا: مسکان عتیق",
+    "description": "The footer copyright"
+  }
+}

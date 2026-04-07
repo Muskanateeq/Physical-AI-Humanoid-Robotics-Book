@@ -1,0 +1,33 @@
+{
+  "name": "database-auth-skill",
+  "version": "1.0.0",
+  "description": "Database design and implementation for authentication using PostgreSQL and SQLModel focusing on user table/model with proper constraints and Railway deployment compatibility",
+  "main": "SKILL.md",
+  "scripts": {
+    "test": "echo \"No tests specified for this skill\"",
+    "docs": "echo \"Documentation available in SKILL.md and related files\""
+  },
+  "keywords": [
+    "postgresql",
+    "sqlmodel",
+    "database",
+    "authentication",
+    "sqlalchemy",
+    "railway",
+    "user-model",
+    "migration",
+    "orm"
+  ],
+  "author": "Claude Code",
+  "license": "MIT",
+  "dependencies": {},
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/your-repo.git"
+  },
+  "bugs": {
+    "url": "https://github.com/your-repo/issues"
+  },
+  "homepage": "https://github.com/your-repo#readme"
+}

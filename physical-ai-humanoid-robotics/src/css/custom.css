@@ -1,0 +1,317 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/**
+ * Any CSS included here will be global. The classic template
+ * bundles Infima by default. Infima is a CSS framework designed to
+ * work well for content-centric websites.
+ */
+
+@import url("https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Inter:wght@300;400;500;700&family=Fira+Code&display=swap");
+
+:root {
+  /* --- Light Mode Colors (Docusaurus Defaults + Custom) --- */
+  --ifm-background-color: #f8f9fe;
+  --ifm-card-background-color: #ffffff;
+  --ifm-color-primary: #6a5acd; /* Slate Blue */
+  --ifm-color-primary-dark: #5848b8;
+  --ifm-color-secondary: #daa520; /* Goldenrod */
+  --ifm-color-secondary-dark: #b8860b; /* Dark Goldenrod */
+
+  --ifm-heading-color: #1e1b4b; /* Dark Text */
+  --ifm-font-color-base: #334155; /* Standard Text */
+  --ifm-font-color-secondary: #64748b; /* Muted Text */
+
+  --ifm-hr-border-color: #e2e8f0;
+  --ifm-code-background-color: #f0f2f5;
+
+  /* Gradients and Shadows for Light Mode */
+  --ifm-glow-primary: rgba(106, 90, 205, 0.35);
+  --ifm-glow-secondary: rgba(218, 165, 32, 0.35);
+  --ifm-shadow-card: 0 4px 12px rgba(0, 0, 0, 0.1);
+  --ifm-shadow-card-hover: 0 8px 20px rgba(0, 0, 0, 0.15);
+  --course-card-hover-glow-color: #7b68ee; /* MediumSlateBlue for light mode glow */
+  --course-card-badge-line-color: var(--ifm-color-primary);
+
+  /* --- Typography --- */
+  --ifm-font-family-base: "Inter", system-ui, sans-serif;
+  --ifm-font-family-headings: "Playfair Display", serif;
+  --ifm-code-font-family: "Fira Code", monospace;
+
+  --ifm-font-size-h1: 2.2rem;
+  --ifm-font-size-h2: 1.8rem;
+  --ifm-font-size-h3: 1.5rem;
+  --ifm-font-size-h4: 1.2rem;
+  --ifm-font-size-base: 0.95rem; /* 15.2px */
+  --ifm-font-size-sm: 0.875rem; /* 14px */
+
+  --ifm-heading-font-weight: 700;
+  --ifm-font-weight-base: 400;
+  --ifm-font-weight-bold: 500;
+  --ifm-font-weight-navbar: 500;
+
+  --ifm-line-height-h: 1.2;
+  --ifm-line-height-base: 1.6;
+  --ifm-letter-spacing-h: 0.5px;
+  --ifm-letter-spacing-base: 0.2px;
+  --ifm-letter-spacing-navbar: 0.8px;
+}
+
+/* --- Dark Mode Overrides --- */
+html[data-theme="dark"] {
+  --ifm-background-color: #0f172a; /* Deep Navy */
+  --ifm-card-background-color: #1e1b4b; /* Darker Surface */
+  --ifm-color-primary: #6a5acd; /* Slate Blue */
+  --ifm-color-primary-dark: #8b7cff; /* Brighter version for dark hover */
+  --ifm-color-secondary: #daa520; /* Goldenrod */
+  --ifm-color-secondary-dark: #b8860b; /* Dark Goldenrod */
+
+  --ifm-heading-color: #f8f9fe; /* White/Off-white */
+  --ifm-font-color-base: #94a3b8; /* Muted Blue-Grey */
+  --ifm-font-color-secondary: #cbd5e1; /* Muted Text (lighter in dark mode) */
+
+  --ifm-hr-border-color: #2e2b5f; /* Darker Border */
+  --ifm-code-background-color: #1a1a2e;
+
+  /* Gradients and Shadows for Dark Mode */
+  --ifm-glow-primary: rgba(106, 90, 205, 0.6);
+  --ifm-glow-secondary: rgba(218, 165, 32, 0.6);
+  --ifm-shadow-card: 0 4px 12px rgba(0, 0, 0, 0.6); /* More prominent shadow in dark mode */
+  --ifm-shadow-card-hover: 0 8px 20px rgba(0, 0, 0, 0.8);
+  --course-card-hover-glow-color: #8b7cff; /* Bright Slate Blue for dark mode glow */
+  --course-card-badge-line-color: var(--ifm-color-primary-dark);
+}
+
+/* --- Global Styles & Typography --- */
+body {
+  font-family: var(--ifm-font-family-base);
+  font-size: var(--ifm-font-size-base);
+  font-weight: var(--ifm-font-weight-base);
+  line-height: var(--ifm-line-height-base);
+  letter-spacing: var(--ifm-letter-spacing-base);
+  color: var(--ifm-font-color-base);
+  background-color: var(
+    --ifm-background-color
+  ); /* Implicitly use Docusaurus background */
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--ifm-font-family-headings);
+  font-weight: var(--ifm-heading-font-weight);
+  line-height: var(--ifm-line-height-h);
+  letter-spacing: var(--ifm-letter-spacing-h);
+  color: var(--ifm-heading-color);
+}
+
+h1 {
+  font-size: var(--ifm-font-size-h1);
+}
+h2 {
+  font-size: var(--ifm-font-size-h2);
+  border-bottom: 2px solid var(--ifm-color-primary);
+  padding-bottom: 0.5rem;
+  margin-bottom: 1rem;
+}
+h3 {
+  font-size: var(--ifm-font-size-h3);
+}
+h4 {
+  font-size: var(--ifm-font-size-h4);
+}
+
+small,
+.text--muted {
+  font-size: var(--ifm-font-size-sm);
+  color: var(--ifm-font-color-secondary);
+}
+
+/* --- Buttons --- */
+.button {
+  font-family: var(--ifm-font-family-base);
+  font-weight: var(--ifm-font-weight-bold);
+  text-transform: uppercase;
+  letter-spacing: var(--ifm-letter-spacing-navbar);
+  transition: all 0.3s ease;
+  border-radius: 8px;
+  padding: 0.8rem 1.5rem;
+}
+
+.button--primary {
+  background-color: var(--ifm-color-primary);
+  color: var(--ifm-heading-color);
+  border: none;
+  box-shadow: var(--ifm-shadow-card);
+}
+
+.button--primary:hover {
+  background-color: var(--ifm-color-primary-dark);
+  transform: translateY(-2px);
+  box-shadow:
+    var(--ifm-shadow-card-hover),
+    0 0 15px var(--ifm-glow-primary);
+}
+
+.button--secondary {
+  background-color: transparent;
+  color: var(--ifm-heading-color);
+  border: 1px solid var(--ifm-heading-color);
+  box-shadow: var(--ifm-shadow-card);
+}
+
+.button--secondary:hover {
+  border-color: var(--ifm-color-secondary);
+  color: var(--ifm-color-secondary);
+  transform: translateY(-2px);
+  box-shadow:
+    var(--ifm-shadow-card-hover),
+    0 0 15px var(--ifm-glow-secondary);
+}
+
+/* --- Navbar --- */
+.navbar {
+  background-color: var(--ifm-background-color);
+  border-bottom: 1px solid var(--ifm-hr-border-color);
+}
+
+.navbar__title {
+  /* Refined Gradient text for "NEUROBOTICS" */
+  background: linear-gradient(
+    to right,
+    var(--ifm-color-primary),
+    color-mix(
+      in srgb,
+      var(--ifm-color-primary) 50%,
+      var(--ifm-color-secondary)
+    ),
+    var(--ifm-color-secondary)
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  color: transparent;
+  font-weight: 700; /* Adjusted for Playfair Display */
+  font-family: var(--ifm-font-family-headings); /* Classic font style */
+  font-size: 1.4rem; /* Smaller font size for logo */
+  transition: all 0.3s ease;
+}
+
+.navbar__title:hover {
+  filter: brightness(1.1); /* Subtle brightness change on hover */
+}
+
+.navbar__item.navbar__link {
+  text-transform: uppercase;
+  letter-spacing: var(--ifm-letter-spacing-navbar);
+  font-weight: var(--ifm-font-weight-navbar);
+  color: var(--ifm-font-color-base);
+  transition:
+    color 0.3s ease,
+    background-color 0.3s ease;
+}
+
+.navbar__item.navbar__link:hover {
+  color: var(--ifm-color-primary); /* Slate Blue on hover */
+  background-color: rgba(var(--ifm-color-primary-rgb), 0.1);
+}
+
+/* Navbar Toggle (Light/Dark Theme Switch) Hover - Goldenrod */
+.colorModeToggle_node_modules-\@docusaurus-theme-classic-lib-theme-Navbar-ColorModeToggle-styles-module:hover,
+.navbar__item.dropdown--hoverable .navbar__link:hover, /* For locale dropdown */
+.navbar__item.dropdown--hoverable .navbar__link--active {
+  background-color: rgba(
+    var(--ifm-color-secondary-rgb),
+    0.2
+  ); /* Goldenrod background */
+  color: var(--ifm-color-secondary); /* Goldenrod text */
+}
+
+.navbar__item--practical-demo .badge--soon {
+  position: absolute;
+  top: -8px;
+  right: -30px; /* Adjust positioning */
+  background-color: var(--ifm-color-secondary-dark); /* Dark Goldenrod */
+  color: #f8f9fe;
+  font-size: 0.65rem;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-weight: bold;
+  line-height: 1;
+  text-transform: uppercase;
+  white-space: nowrap;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+  pointer-events: none;
+}
+
+/* Global Card Styling (re-applying from previous for consistency) */
+.card {
+  background-color: var(--ifm-card-background-color);
+  border: 1px solid var(--ifm-hr-border-color);
+  border-radius: 12px;
+  box-shadow: var(--ifm-shadow-card);
+  transition: all 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow:
+    var(--ifm-shadow-card-hover),
+    0 0 15px var(--ifm-glow-primary);
+}
+
+/* Responsive adjustments */
+@media screen and (max-width: 996px) {
+  .navbar__title {
+    font-size: 1.1rem;
+  }
+  .navbar__item--practical-demo {
+    margin-left: 0;
+  }
+  .navbar__item--practical-demo .badge--soon {
+    right: -25px;
+    top: -5px;
+    font-size: 0.55rem;
+    padding: 1px 4px;
+  }
+}
+
+/* Custom Footer Link Styles */
+.footer__link-item {
+  font-size: 0.85rem; /* Smaller font size */
+  color: #ffffff; /* White font color */
+}
+
+.footer__link-item:hover {
+  color: var(
+    --ifm-color-primary
+  ); /* Maintain hover effect with primary color */
+}
+
+/* Navbar Auth Buttons */
+.navbar-signup-button {
+  background-color: var(--ifm-color-primary) !important;
+  color: white !important;
+  border-radius: 6px !important;
+  padding: 6px 16px !important;
+  margin-left: 8px !important;
+  font-weight: 500 !important;
+  transition: all 0.2s ease !important;
+}
+
+.navbar-signup-button:hover {
+  background-color: var(--ifm-color-primary-dark) !important;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(106, 90, 205, 0.3) !important;
+}
+
+/* Homepage Section Titles Override */
+.roadmapTitle,
+.sectionTitle,
+.ctaTitle {
+  border-bottom: none !important;
+}

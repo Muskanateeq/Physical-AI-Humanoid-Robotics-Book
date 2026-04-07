@@ -1,0 +1,300 @@
+/* src/components/HomepageHero/styles.module.css */
+
+/* Custom variables for dark theme override */
+.dark-theme-override {
+    --hero-fixed-primary: #6a5acd;
+    --hero-fixed-secondary: #ffc107;
+    --hero-fixed-bg-dark: #1a1a2e; /* From original --ifm-background-color */
+    --hero-fixed-bg-light: #2b245f; /* From user's palette for main hero background */
+    --hero-fixed-heading-color: #f0f0f0;
+    --hero-fixed-text-color: #d0d0d0;
+    --hero-fixed-card-bg: rgba(26, 26, 46, 0.7);
+    --hero-fixed-border-color: #5848b8;
+    --hero-fixed-primary-rgb: 106, 92, 205;
+    --hero-fixed-secondary-rgb: 255, 193, 7;
+    --hero-fixed-button-hover: #5648b6; /* From user's palette */
+
+    --ifm-background-color: var(
+        --hero-fixed-bg-dark
+    ); /* Redefine existing Docusaurus vars to use fixed ones for this scope */
+    --ifm-color-primary-rgb: var(--hero-fixed-primary-rgb);
+    --ifm-color-secondary-rgb: var(--hero-fixed-secondary-rgb);
+    --ifm-heading-color: var(--hero-fixed-heading-color);
+    --ifm-font-color-base: var(--hero-fixed-text-color);
+    --ifm-color-primary: var(--hero-fixed-primary);
+    --ifm-color-secondary: var(--hero-fixed-secondary);
+    --ifm-card-background-color: var(--hero-fixed-card-bg);
+    --ifm-hr-border-color: var(--hero-fixed-border-color);
+}
+
+.heroSection {
+    min-height: calc(80vh - 60px); /* Hardcoded navbar height approx 60px */
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding-top: 0;
+    position: relative;
+    overflow: hidden;
+    background-color: var(
+        --hero-fixed-bg-light
+    ); /* From user's palette for main hero background */
+    background-image:
+        linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+    background-size: 40px 40px; /* Adjust grid size as needed */
+    background-attachment: fixed;
+}
+
+/* Subtle depth effect for grid */
+.heroSection::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background:
+        radial-gradient(
+            circle at 15% 25%,
+            rgba(var(--hero-fixed-primary-rgb), 0.08) 0%,
+            transparent 40%
+        ),
+        radial-gradient(
+            circle at 85% 75%,
+            rgba(var(--hero-fixed-secondary-rgb), 0.08) 0%,
+            transparent 40%
+        );
+    z-index: 0;
+    pointer-events: none;
+}
+
+.heroContainer {
+    width: 100%;
+    position: relative; /* Ensure content is above the pseudo-element */
+    z-index: 1;
+}
+
+.heroRow {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between; /* Space out columns */
+    gap: 2rem;
+}
+
+.heroTextColumn {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 1rem;
+    padding: 2rem 1rem;
+    text-align: left;
+}
+
+.mainHeadline {
+    font-size: var(
+        --ifm-font-size-h2
+    ); /* Hardcoded from typical Docusaurus h2 */
+    font-weight: var(
+        --ifm-heading-font-weight
+    ); /* Hardcoded from typical Docusaurus heading weight */
+    line-height: 1.2;
+    color: var(--ifm-heading-color);
+    margin-bottom: 0.8rem;
+    font-family: var(--ifm-font-family-headings); /* Generic sans-serif */
+    position: relative; /* For the animated underline */
+    padding-bottom: 15px; /* Space for underline */
+}
+
+.physicalIntelligence {
+    color: var(--ifm-color-primary); /* Slate Blue */
+}
+
+.animatedUnderline {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 3px;
+    background-color: var(--ifm-color-primary);
+    animation: expandUnderline 2s ease-out forwards;
+}
+
+@keyframes expandUnderline {
+    0% {
+        width: 0;
+    }
+    100% {
+        width: 100%;
+    }
+}
+
+.subHeadline {
+    font-size: var(--ifm-font-size-base);
+    color: var(--ifm-font-color-base);
+    margin-bottom: 1.5rem;
+    font-family: var(--ifm-font-family-base);
+}
+
+.buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.2rem;
+    margin-top: 1rem;
+}
+
+.heroButton {
+    min-width: 160px; /* Slightly smaller buttons */
+    padding: 0.7rem 1.3rem;
+    font-size: var(--ifm-font-size-sm);
+}
+
+.techStack {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem 1rem;
+    margin-top: 2rem;
+    font-size: var(--ifm-font-size-sm);
+    color: var(
+        --ifm-font-color-secondary
+    ); /* Lighter gray for disabled feeling */
+    font-family: var(--ifm-font-family-base);
+}
+
+.goldenrodBullet {
+    color: var(--ifm-color-secondary);
+    font-weight: bold;
+}
+
+.heroDiagramColumn {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem 1rem;
+    min-height: 400px; /* Ensure diagram column has a min height */
+}
+
+/* --- Schematic Diagram Styles (base for animation) --- */
+.schematicDiagramContainer {
+    width: 100%;
+    max-width: 550px; /* Max width for the SVG */
+    aspect-ratio: 1/1; /* Square aspect ratio for robot body */
+    position: relative;
+}
+
+.schematicSvg {
+    width: 100%;
+    height: 100%;
+}
+
+.robotBody {
+    fill: var(--ifm-card-background-color); /* Darker surface */
+    stroke: var(--ifm-color-primary);
+    stroke-width: 3;
+    filter: url(#glowPrimary); /* Apply glow filter */
+}
+
+.robotBodyLegs {
+    fill: var(--ifm-card-background-color);
+    stroke: var(--ifm-color-primary);
+    stroke-width: 2;
+    filter: url(#glowPrimary);
+}
+
+.roboticNode {
+    fill: #343d68; /* Slightly lighter shade of primary for node fill */
+    stroke: var(--ifm-color-primary);
+    stroke-width: 2;
+    filter: url(#glowPrimary);
+}
+
+.roboticLine {
+    stroke: var(--ifm-color-primary);
+    stroke-width: 2;
+    fill: none;
+    animation: flowLine 4s linear infinite; /* Animation for lines */
+    stroke-dasharray: 10 10;
+}
+.roboticLine:nth-child(even) {
+    animation-delay: -2s; /* Stagger animation */
+}
+
+@keyframes flowLine {
+    0% {
+        stroke-dashoffset: 0;
+    }
+    100% {
+        stroke-dashoffset: 20; /* Moves the dashes along the line */
+    }
+}
+
+.roboticNodeText {
+    fill: var(--ifm-heading-color);
+    font-family: var(--ifm-font-family-base);
+    font-size: 14px;
+    font-weight: 500;
+    text-anchor: middle;
+    text-transform: uppercase;
+}
+
+.connectionDot {
+    fill: var(--ifm-color-secondary); /* Goldenrod dot */
+    filter: url(#glowSecondary);
+}
+
+.floatingBadgeBg {
+    fill: rgba(var(--ifm-card-background-color-rgb), 0.8);
+    stroke: var(--ifm-hr-border-color);
+    stroke-width: 1;
+}
+.floatingBadgeText {
+    fill: var(--ifm-font-color-base);
+    font-family: var(--ifm-font-family-base);
+    font-size: 12px;
+    text-anchor: middle;
+    font-weight: 500;
+}
+
+/* Responsive Adjustments */
+@media screen and (max-width: 996px) {
+    .heroSection {
+        min-height: auto;
+        padding-top: calc(var(--ifm-navbar-height) + 2rem);
+        padding-bottom: 3rem;
+    }
+    .heroRow {
+        flex-direction: column; /* Stack columns vertically */
+        text-align: center;
+        gap: 2rem; /* Restore appropriate gap */
+    }
+    .heroTextColumn {
+        order: 2; /* Ensure text is below diagram on small screens */
+        width: 100%; /* Take full width */
+        padding: 0 1rem; /* Adjust padding */
+    }
+    .heroDiagramColumn {
+        order: 1; /* Ensure diagram is above text on small screens */
+        width: 100%; /* Take full width */
+        min-height: 300px;
+        padding: 0 1rem; /* Adjust padding */
+    }
+    .mainHeadline {
+        font-size: var(--ifm-font-size-h2); /* Maintain readable size */
+        padding-bottom: 10px;
+    }
+    .animatedUnderline {
+        height: 2px;
+    }
+    .subHeadline {
+        font-size: var(--ifm-font-size-base); /* Maintain readable size */
+    }
+    .buttons {
+        justify-content: center;
+    }
+    .techStack {
+        justify-content: center;
+        font-size: var(--ifm-font-size-sm);
+    }
+}

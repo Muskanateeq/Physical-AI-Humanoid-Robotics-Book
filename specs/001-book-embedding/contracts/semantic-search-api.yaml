@@ -1,0 +1,293 @@
+openapi: 3.0.0
+info:
+  title: Physical AI & Humanoid Robotics Book Semantic Search API
+  description: API for semantic search of the "Physical AI & Humanoid Robotics" book content using vector embeddings. The book contains 19 chapters across 5 modules.
+  version: 1.0.0
+servers:
+  - url: http://localhost:8000
+    description: Development server
+
+paths:
+  /health:
+    get:
+      summary: Health check endpoint
+      description: Check if the service is running and healthy
+      responses:
+        '200':
+          description: Service is healthy
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: "healthy"
+                  timestamp:
+                    type: string
+                    format: date-time
+                    example: "2025-12-06T10:00:00Z"
+
+  /search:
+    post:
+      summary: Semantic search in Physical AI & Humanoid Robotics book content
+      description: Search for content in the "Physical AI & Humanoid Robotics" book using semantic similarity. The book contains 19 chapters across 5 modules.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - query
+              properties:
+                query:
+                  type: string
+                  description: The search query
+                  example: "How does neural network learning work in humanoid robotics?"
+                limit:
+                  type: integer
+                  description: Maximum number of results to return
+                  default: 10
+                  minimum: 1
+                  maximum: 100
+                filters:
+                  type: object
+                  description: Optional filters for the search
+                  properties:
+                    document_path:
+                      type: string
+                      description: Filter results by specific document path
+                    module:
+                      type: string
+                      description: Filter results by book module (e.g., "module-1-ros2", "module-2-simulation", etc.)
+                    chapter:
+                      type: string
+                      description: Filter results by specific chapter
+                    metadata:
+                      type: object
+                      description: Filter by document metadata
+      responses:
+        '200':
+          description: Search results
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  query:
+                    type: string
+                    description: The original search query
+                  results:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                          description: Unique identifier for the result
+                        document_id:
+                          type: string
+                          description: ID of the source document
+                        file_path:
+                          type: string
+                          description: Path to the source document
+                        module:
+                          type: string
+                          description: Book module (e.g., "module-1-ros2")
+                        chapter:
+                          type: string
+                          description: Chapter within the module
+                        content:
+                          type: string
+                          description: The matching content chunk
+                        score:
+                          type: number
+                          format: float
+                          description: Similarity score (0-1)
+                        chunk_index:
+                          type: integer
+                          description: Position of the chunk in the document
+                        metadata:
+                          type: object
+                          description: Additional metadata from the document
+                  count:
+                    type: integer
+                    description: Number of results returned
+        '400':
+          description: Invalid request parameters
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: "Query parameter is required"
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: "Search service unavailable"
+
+  /index/status:
+    get:
+      summary: Get indexing status
+      description: Check the status of the indexing process for the "Physical AI & Humanoid Robotics" book (19 chapters across 5 modules)
+      responses:
+        '200':
+          description: Indexing status
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  total_documents:
+                    type: integer
+                    description: Total number of documents indexed (should be 19 for complete book)
+                  processed_documents:
+                    type: integer
+                    description: Number of documents processed
+                  status:
+                    type: string
+                    enum: [idle, indexing, updating, error]
+                    description: Current indexing status
+                  last_updated:
+                    type: string
+                    format: date-time
+                    description: When the index was last updated
+                  modules_indexed:
+                    type: object
+                    description: Count of chapters indexed per module
+                    additionalProperties:
+                      type: integer
+
+  /index/documents:
+    get:
+      summary: List indexed documents
+      description: Get a list of all documents in the index from the "Physical AI & Humanoid Robotics" book
+      parameters:
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            default: 50
+          description: Maximum number of documents to return
+        - name: offset
+          in: query
+          schema:
+            type: integer
+            default: 0
+          description: Number of documents to skip
+        - name: module
+          in: query
+          schema:
+            type: string
+          description: Filter by specific module (e.g., "module-1-ros2")
+      responses:
+        '200':
+          description: List of indexed documents
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  documents:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                          description: Document ID
+                        file_path:
+                          type: string
+                          description: Path to the document
+                        module:
+                          type: string
+                          description: Book module
+                        chapter:
+                          type: string
+                          description: Chapter within the module
+                        title:
+                          type: string
+                          description: Document title
+                        created_at:
+                          type: string
+                          format: date-time
+                          description: When the document was indexed
+                        updated_at:
+                          type: string
+                          format: date-time
+                          description: When the document was last updated
+                        chunk_count:
+                          type: integer
+                          description: Number of content chunks in the index
+                  total:
+                    type: integer
+                    description: Total number of documents
+                  modules_summary:
+                    type: object
+                    description: Summary of documents per module
+                    additionalProperties:
+                      type: integer
+
+  /index/process:
+    post:
+      summary: Process and index book documents
+      description: Process chapters from the "Physical AI & Humanoid Robotics" book (19 chapters across 5 modules) in frontend/docs directory and add to index
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                paths:
+                  type: array
+                  items:
+                    type: string
+                  description: Specific paths to process (if not specified, processes all 19 chapters)
+                module:
+                  type: string
+                  description: Process only chapters from a specific module (e.g., "module-1-ros2")
+                modules:
+                  type: array
+                  items:
+                    type: string
+                  description: Process only chapters from specific modules
+                force_reindex:
+                  type: boolean
+                  default: false
+                  description: Whether to reindex existing documents
+      responses:
+        '200':
+          description: Processing initiated successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Indexing process started for Physical AI & Humanoid Robotics book"
+                  job_id:
+                    type: string
+                    example: "index-job-123"
+                  total_documents:
+                    type: integer
+                    description: Total number of documents to process
+        '500':
+          description: Error initiating processing
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: "Failed to start indexing process"

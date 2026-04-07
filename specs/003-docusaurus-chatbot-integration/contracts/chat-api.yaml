@@ -1,0 +1,181 @@
+# API Contract: RAG Chatbot for Docusaurus Book
+
+## Overview
+This document specifies the API contracts for the RAG chatbot service that enables users to ask questions about the Physical AI & Humanoid Robotics book content and receive AI-generated answers based on relevant passages.
+
+## Base URL
+`http://localhost:8000` (development)
+`https://api.yourdomain.com` (production)
+
+## Authentication
+Bearer token authentication for user-specific features (history save, feedback), optional for basic chat functionality.
+
+## Endpoints
+
+### POST /chat/query
+Submit a question about book content and receive an AI-generated response.
+
+#### Request
+**Content-Type**: `application/json`
+**Authorization**: Bearer [token] (optional)
+
+**Body**:
+```json
+{
+  "query": "string (required) - The user's question about the book content",
+  "sessionId": "string (optional) - ID to maintain conversation context",
+  "selected_text": "string (optional) - Specific text selected by the user for focused questioning"
+}
+```
+
+**Example Request**:
+```json
+{
+  "query": "Explain the concept of embodied intelligence mentioned in the book",
+  "sessionId": "sess_12345",
+  "selected_text": "Embodied intelligence refers to AI systems that interact with the physical world"
+}
+```
+
+#### Response
+**Success Response (200 OK)**:
+```json
+{
+  "response": "string - The AI-generated answer",
+  "sources": [
+    {
+      "content": "string - The text content that was referenced",
+      "page_number": "integer - Page number in the book",
+      "section_title": "string - Title of the section",
+      "similarity_score": "float - Relevance score from vector search (0.0 to 1.0)",
+      "source_url": "string - URL to the relevant section in the Docusaurus book"
+    }
+  ],
+  "sessionId": "string - Session identifier for conversation context",
+  "messageId": "string - Unique identifier for this response message"
+}
+```
+
+**Example Response**:
+```json
+{
+  "response": "Embodied intelligence is a concept where AI systems are designed to interact with and understand the physical world through sensors and actuators, rather than existing purely in digital form...",
+  "sources": [
+    {
+      "content": "Embodied intelligence refers to AI systems that interact with the physical world",
+      "page_number": 45,
+      "section_title": "Introduction to Embodied Intelligence",
+      "similarity_score": 0.92,
+      "source_url": "/docs/module-1-ros2/weeks-1-2-introduction"
+    }
+  ],
+  "sessionId": "sess_12345",
+  "messageId": "msg_67890"
+}
+```
+
+**Error Response (400 Bad Request)**:
+```json
+{
+  "error": "string - Error message explaining the issue"
+}
+```
+
+### GET /health
+Check the health status of the service.
+
+#### Response
+**Success Response (200 OK)**:
+```json
+{
+  "status": "string - Health status (e.g., 'healthy')"
+}
+```
+
+### POST /chat/history
+Retrieve conversation history for a specific session.
+
+#### Request
+**Content-Type**: `application/json`
+**Authorization**: Bearer [token] (required for saved histories)
+
+**Body**:
+```json
+{
+  "sessionId": "string (required) - ID of the session to retrieve history for",
+  "limit": "integer (optional, default: 50) - Maximum number of messages to return"
+}
+```
+
+#### Response
+**Success Response (200 OK)**:
+```json
+{
+  "sessionId": "string - Session identifier",
+  "messages": [
+    {
+      "id": "string - Message identifier",
+      "content": "string - Message content",
+      "role": "string - 'user' or 'assistant'",
+      "timestamp": "string - ISO 8601 timestamp",
+      "likeStatus": "string - 'liked', 'disliked', or null",
+      "sourceReferences": [
+        {
+          "content": "string - Referenced book content",
+          "page_number": "integer - Page number",
+          "section_title": "string - Section title",
+          "similarity_score": "float - Relevance score",
+          "source_url": "string - URL to relevant section"
+        }
+      ]
+    }
+  ]
+}
+```
+
+### POST /chat/history/save
+Save a conversation history with a title.
+
+#### Request
+**Content-Type**: `application/json`
+**Authorization**: Bearer [token] (required)
+
+**Body**:
+```json
+{
+  "sessionId": "string (required) - ID of the session to save",
+  "title": "string (required) - Title for the saved conversation"
+}
+```
+
+#### Response
+**Success Response (200 OK)**:
+```json
+{
+  "historyId": "string - Unique identifier for the saved history",
+  "message": "string - Confirmation message"
+}
+```
+
+### POST /chat/feedback
+Submit feedback for a specific message (like/dislike).
+
+#### Request
+**Content-Type**: `application/json`
+**Authorization**: Bearer [token] (optional)
+
+**Body**:
+```json
+{
+  "messageId": "string (required) - ID of the message being rated",
+  "feedbackType": "string (required) - 'like' or 'dislike'"
+}
+```
+
+#### Response
+**Success Response (200 OK)**:
+```json
+{
+  "message": "string - Confirmation message"
+}
+```

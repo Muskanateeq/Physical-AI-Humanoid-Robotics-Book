@@ -1,0 +1,34 @@
+{
+  "name": "backend-auth-skill",
+  "version": "1.0.0",
+  "description": "Simple authentication backend using Python and FastAPI focusing on user signup, signin, and token-based authentication",
+  "main": "SKILL.md",
+  "scripts": {
+    "test": "echo \"No tests specified for this skill\"",
+    "docs": "echo \"Documentation available in SKILL.md and related files\""
+  },
+  "keywords": [
+    "python",
+    "fastapi",
+    "authentication",
+    "backend",
+    "auth-flow",
+    "jwt",
+    "token",
+    "signup",
+    "signin",
+    "security"
+  ],
+  "author": "Claude Code",
+  "license": "MIT",
+  "dependencies": {},
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/your-repo.git"
+  },
+  "bugs": {
+    "url": "https://github.com/your-repo/issues"
+  },
+  "homepage": "https://github.com/your-repo#readme"
+}

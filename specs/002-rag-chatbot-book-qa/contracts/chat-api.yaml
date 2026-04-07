@@ -1,0 +1,126 @@
+# API Contract: RAG Chatbot for Book Content Q&A
+
+## Overview
+This document specifies the API contracts for the RAG chatbot service that enables users to ask questions about book content and receive AI-generated answers based on relevant passages.
+
+## Base URL
+`http://localhost:8000` (development)
+`https://api.yourdomain.com` (production)
+
+## Authentication
+None required for initial implementation. Future implementations may require API keys or JWT tokens.
+
+## Endpoints
+
+### POST /chat/query
+Submit a question about book content and receive an AI-generated response.
+
+#### Request
+**Content-Type**: `application/json`
+
+**Body**:
+```json
+{
+  "query": "string (required) - The user's question about the book content",
+  "selected_text": "string (optional) - Specific text selected by the user for focused questioning",
+  "context_length": "integer (optional, default: 5) - Number of surrounding paragraphs to include as context",
+  "session_id": "string (optional) - ID to maintain conversation context"
+}
+```
+
+**Example Request**:
+```json
+{
+  "query": "Explain the concept of embodied intelligence mentioned in the book",
+  "selected_text": "Embodied intelligence refers to AI systems that interact with the physical world",
+  "context_length": 3,
+  "session_id": "sess_12345"
+}
+```
+
+#### Response
+**Success Response (200 OK)**:
+```json
+{
+  "response": "string - The AI-generated answer",
+  "sources": [
+    {
+      "content": "string - The text content that was referenced",
+      "page_number": "integer - Page number in the book",
+      "section_title": "string - Title of the section",
+      "similarity_score": "float - Relevance score from vector search (0.0 to 1.0)"
+    }
+  ],
+  "session_id": "string - Session identifier for conversation context"
+}
+```
+
+**Example Response**:
+```json
+{
+  "response": "Embodied intelligence is a concept where AI systems are designed to interact with and understand the physical world through sensors and actuators, rather than existing purely in digital form...",
+  "sources": [
+    {
+      "content": "Embodied intelligence refers to AI systems that interact with the physical world",
+      "page_number": 45,
+      "section_title": "Introduction to Embodied Intelligence",
+      "similarity_score": 0.92
+    }
+  ],
+  "session_id": "sess_12345"
+}
+```
+
+**Error Response (400 Bad Request)**:
+```json
+{
+  "error": "string - Error message explaining the issue"
+}
+```
+
+### GET /health
+Check the health status of the service.
+
+#### Response
+**Success Response (200 OK)**:
+```json
+{
+  "status": "string - Health status (e.g., 'healthy')"
+}
+```
+
+### POST /chat/history
+Retrieve conversation history for a specific session.
+
+#### Request
+**Content-Type**: `application/json`
+
+**Body**:
+```json
+{
+  "session_id": "string (required) - ID of the session to retrieve history for"
+}
+```
+
+#### Response
+**Success Response (200 OK)**:
+```json
+{
+  "session_id": "string - Session identifier",
+  "history": [
+    {
+      "role": "string - 'user' or 'assistant'",
+      "content": "string - The message content",
+      "timestamp": "string - ISO 8601 timestamp",
+      "sources": [
+        {
+          "content": "string - Referenced book content",
+          "page_number": "integer - Page number",
+          "section_title": "string - Section title",
+          "similarity_score": "float - Relevance score"
+        }
+      ]
+    }
+  ]
+}
+```

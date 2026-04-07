@@ -1,0 +1,34 @@
+{
+  "name": "frontend-auth-skill",
+  "version": "1.0.0",
+  "description": "Frontend authentication flow for Docusaurus (React-based) environment focusing on auth state management, signup/signin pages, navbar integration, and chatbot access control",
+  "main": "SKILL.md",
+  "scripts": {
+    "test": "echo \"No tests specified for this skill\"",
+    "docs": "echo \"Documentation available in SKILL.md and related files\""
+  },
+  "keywords": [
+    "docusaurus",
+    "react",
+    "authentication",
+    "frontend",
+    "auth-flow",
+    "context",
+    "provider",
+    "navbar",
+    "chatbot",
+    "routing"
+  ],
+  "author": "Claude Code",
+  "license": "MIT",
+  "dependencies": {},
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/your-repo.git"
+  },
+  "bugs": {
+    "url": "https://github.com/your-repo/issues"
+  },
+  "homepage": "https://github.com/your-repo#readme"
+}

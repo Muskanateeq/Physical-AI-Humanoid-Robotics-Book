@@ -1,0 +1,84 @@
+/* src/components/FinalCTABanner/styles.module.css */
+
+.ctaBanner {
+    padding: 6rem 0;
+    background-color: var(--ifm-background-color);
+    color: var(--ifm-heading-color); /* White text */
+    background: linear-gradient(
+        45deg,
+        color-mix(in srgb, var(--ifm-color-primary) 80%, black),
+        color-mix(in srgb, var(--ifm-color-primary) 60%, black)
+    );
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.ctaBanner::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    /* Updated gradient overlay for consistency */
+
+    opacity: 0.9; /* More prominent overlay */
+    z-index: 0;
+}
+
+.ctaBanner > .container {
+    position: relative;
+    z-index: 1;
+}
+
+.ctaTitle {
+    font-size: var(--ifm-font-size-h1);
+    color: var(--ifm-heading-color); /* White text */
+    margin-bottom: 2rem;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+}
+
+.ctaButtons {
+    display: flex;
+    justify-content: center;
+}
+
+.ctaButton {
+    min-width: 250px;
+    padding: 1rem 2rem;
+    font-size: 1.2rem;
+    background-color: var(
+        --ifm-heading-color
+    ); /* White button on colored banner */
+    color: var(--ifm-color-primary); /* Text color from primary */
+    border: none;
+    font-weight: bold;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+}
+
+.ctaButton:hover {
+    background-color: color-mix(
+        in srgb,
+        var(--ifm-heading-color) 90%,
+        black
+    ); /* Slightly darker white on hover */
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px var(--ifm-glow-primary); /* Use primary glow */
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .ctaTitle {
+        font-size: var(--ifm-font-size-h2);
+    }
+    .ctaButton {
+        min-width: unset;
+        width: 80%;
+        padding: 0.8rem 1.5rem;
+        font-size: 1rem;
+    }
+    .ctaBanner {
+        padding: 4rem 0;
+    }
+}

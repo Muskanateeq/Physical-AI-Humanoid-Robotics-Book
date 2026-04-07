@@ -1,0 +1,42 @@
+{
+  "version.label": {
+    "message": "اگلا",
+    "description": "The label for version current"
+  },
+  "sidebar.tutorialSidebar.category.Welcome to Neurobotics": {
+    "message": "نیوروبوٹکس میں خوش آمدید",
+    "description": "The label for category 'Welcome to Neurobotics' in sidebar 'tutorialSidebar'"
+  },
+  "sidebar.tutorialSidebar.category.Module 1: The Robotic Nervous System (ROS 2)": {
+    "message": "ماڈیول 1: روبوٹک اعصابی نظام (ROS 2)",
+    "description": "The label for category 'Module 1: The Robotic Nervous System (ROS 2)' in sidebar 'tutorialSidebar'"
+  },
+  "sidebar.tutorialSidebar.category.Module 1: The Robotic Nervous System (ROS 2).link.generated-index.description": {
+    "message": "ROS 2 سیکھیں، روبوٹکس کے لیے ضروری مڈل ویئر۔ اس ماڈیول میں Nodes، Topics، اور Services شامل ہیں، rclpy استعمال کرتے ہوئے Python ایجنٹس کو جوڑنا، اور ہیومنائیڈ روبوٹ کی ساخت کے لیے URDF کو سمجھنا۔",
+    "description": "The generated-index page description for category 'Module 1: The Robotic Nervous System (ROS 2)' in sidebar 'tutorialSidebar'"
+  },
+  "sidebar.tutorialSidebar.category.Module 2: The Digital Twin (Gazebo & Unity)": {
+    "message": "ماڈیول 2: ڈیجیٹل ٹوئن (Gazebo اور Unity)",
+    "description": "The label for category 'Module 2: The Digital Twin (Gazebo & Unity)' in sidebar 'tutorialSidebar'"
+  },
+  "sidebar.tutorialSidebar.category.Module 2: The Digital Twin (Gazebo & Unity).link.generated-index.description": {
+    "message": "حقیقت پسندانہ ڈیجیٹل ٹوئنز بنانے میں مہارت حاصل کریں۔ Gazebo میں فزکس سمیولیشن (کشش ثقل، تصادم)، Unity میں اعلیٰ معیار کی انسان-روبوٹ تعامل، اور روبوٹ سینسرز (LiDAR، IMU) کی ماڈلنگ پر توجہ۔",
+    "description": "The generated-index page description for category 'Module 2: The Digital Twin (Gazebo & Unity)' in sidebar 'tutorialSidebar'"
+  },
+  "sidebar.tutorialSidebar.category.Module 3: The AI-Robot Brain (NVIDIA Isaac™)": {
+    "message": "ماڈیول 3: AI-روبوٹ دماغ (NVIDIA Isaac™)",
+    "description": "The label for category 'Module 3: The AI-Robot Brain (NVIDIA Isaac™)' in sidebar 'tutorialSidebar'"
+  },
+  "sidebar.tutorialSidebar.category.Module 3: The AI-Robot Brain (NVIDIA Isaac™).link.generated-index.description": {
+    "message": "NVIDIA Isaac Sim استعمال کرتے ہوئے جدید ادراک اور تربیت میں غوطہ لگائیں۔ Isaac ROS کے ساتھ ہارڈویئر سے تیز VSLAM (Visual SLAM) لاگو کریں اور دو پیروں والے ہیومنائیڈ حرکت میں درست راستہ منصوبہ بندی کے لیے Nav2 کو ترتیب دیں۔",
+    "description": "The generated-index page description for category 'Module 3: The AI-Robot Brain (NVIDIA Isaac™)' in sidebar 'tutorialSidebar'"
+  },
+  "sidebar.tutorialSidebar.category.Module 4: Vision-Language-Action (VLA)": {
+    "message": "ماڈیول 4: ویژن-لینگویج-ایکشن (VLA)",
+    "description": "The label for category 'Module 4: Vision-Language-Action (VLA)' in sidebar 'tutorialSidebar'"
+  },
+  "sidebar.tutorialSidebar.category.Module 4: Vision-Language-Action (VLA).link.generated-index.description": {
+    "message": "LLMs اور روبوٹکس کا سنگم۔ اس ماڈیول میں آواز کے احکامات کو اعمال میں تبدیل کرنا، LLMs کے ساتھ منصوبہ بندی، اور اسے حتمی کیپ اسٹون پروجیکٹ میں ضم کرنا شامل ہے۔",
+    "description": "The generated-index page description for category 'Module 4: Vision-Language-Action (VLA)' in sidebar 'tutorialSidebar'"
+  }
+}

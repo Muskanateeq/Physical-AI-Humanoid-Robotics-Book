@@ -1,0 +1,135 @@
+.authSection {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.authButtons {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.signInButton {
+  padding: 0.5rem 1.25rem;
+  background: transparent;
+  color: #6a5acd;
+  border: 1px solid #6a5acd;
+  border-radius: 0.5rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.2s;
+  display: inline-block;
+}
+
+.signInButton:hover {
+  background: rgba(106, 90, 205, 0.1);
+  color: #8b7dd8;
+  border-color: #8b7dd8;
+  text-decoration: none;
+}
+
+.signUpButton {
+  padding: 0.5rem 1.25rem;
+  background: linear-gradient(135deg, #6a5acd, #5b4ab8);
+  color: white;
+  border: none;
+  border-radius: 0.5rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.2s;
+  display: inline-block;
+}
+
+.signUpButton:hover {
+  background: linear-gradient(135deg, #5b4ab8, #4c3ba3);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(106, 90, 205, 0.3);
+  color: white;
+  text-decoration: none;
+}
+
+.userMenu {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.userInfo {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #6a5acd;
+}
+
+.avatarPlaceholder {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #6a5acd, #5b4ab8);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 0.875rem;
+  border: 2px solid #6a5acd;
+}
+
+.userName {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--ifm-navbar-link-color);
+  max-width: 150px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.signOutButton {
+  padding: 0.5rem 1rem;
+  background: rgba(239, 68, 68, 0.1);
+  color: #ef4444;
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  border-radius: 0.5rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.signOutButton:hover {
+  background: rgba(239, 68, 68, 0.2);
+  border-color: rgba(239, 68, 68, 0.5);
+}
+
+@media (max-width: 996px) {
+  .userName {
+    display: none;
+  }
+
+  .userMenu {
+    gap: 0.5rem;
+  }
+}
+
+@media (max-width: 640px) {
+  .authButtons {
+    gap: 0.5rem;
+  }
+
+  .signInButton,
+  .signUpButton {
+    padding: 0.4rem 0.875rem;
+    font-size: 0.85rem;
+  }
+}

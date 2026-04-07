@@ -208,3 +208,12 @@ Wait for consent; never auto-create ADRs. Group related decisions (stacks, authe
 
 ## Code Standards
 See `.specify/memory/constitution.md` for code quality, testing, performance, security, and architecture principles.
+
+## Active Technologies
+- Python 3.11 + FastEmbed, Qdrant, Gemini API, PyYAML, python-dotenv (001-book-embedding)
+- Qdrant vector database (with metadata) (001-book-embedding)
+- Python 3.11 + FastAPI, Qdrant, FastEmbed, Google Gemini API, PyYAML, python-dotenv (002-rag-chatbot-book-qa)
+- Qdrant vector database for book content embeddings, with metadata storage in JSON files (002-rag-chatbot-book-qa)
+
+## Recent Changes
+- 001-book-embedding: Added Python 3.11 + FastEmbed, Qdrant, Gemini API, PyYAML, python-dotenv

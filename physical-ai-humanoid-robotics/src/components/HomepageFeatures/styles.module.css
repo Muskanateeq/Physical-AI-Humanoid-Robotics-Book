@@ -1,0 +1,78 @@
+/* src/components/HomepageFeatures/styles.module.css */
+
+.features {
+    padding: 4rem 0;
+    background-color: var(--ifm-background-color);
+}
+
+.sectionTitle {
+    margin-bottom: 3rem;
+    font-size: var(--ifm-font-size-h2);
+    color: var(--ifm-heading-color);
+}
+
+.featureItem {
+    display: flex;
+    margin-bottom: 2rem;
+    justify-content: center;
+}
+
+.featureCard {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 2rem;
+    max-width: 300px; /* Constrain card width */
+    height: 100%; /* Ensure equal height */
+    box-shadow: var(--ifm-shadow-card);
+    background-color: var(--ifm-card-background-color);
+}
+
+.featureCard:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--ifm-shadow-card-hover), 0 0 15px var(--ifm-glow-primary);
+}
+
+
+.featureSvg {
+    width: 80px;
+    height: 80px;
+    margin-bottom: 1.5rem;
+    fill: var(--ifm-color-primary);
+}
+
+.featureTitle {
+    font-size: var(--ifm-font-size-h3);
+    margin-bottom: 1rem;
+    color: var(--ifm-heading-color);
+}
+
+.featureDescription {
+    color: var(--ifm-font-color-base);
+}
+
+/* Responsive adjustments */
+@media screen and (max-width: 996px) {
+    .featureItem {
+        flex: 0 0 50%;
+        max-width: 50%;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .featureItem {
+        flex: 0 0 100%;
+        max-width: 100%;
+    }
+    .sectionTitle {
+        font-size: var(--ifm-font-size-h3);
+    }
+    .featureCard {
+        padding: 1.5rem;
+    }
+    .featureSvg {
+        width: 60px;
+        height: 60px;
+    }
+}

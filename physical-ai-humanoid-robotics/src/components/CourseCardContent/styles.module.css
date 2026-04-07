@@ -1,0 +1,247 @@
+/* --- Keyframes for Animations --- */
+@keyframes rotating-border {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+/* --- Base Section Styles --- */
+.roadmapSection {
+    padding: 4rem 0;
+    width: 100%;
+    background-color: var(--ifm-background-color);
+    transition: background-color var(--ifm-transition-fast) ease;
+}
+
+.roadmapTitle,
+.roadmapSubtitle {
+    text-align: center;
+    color: var(--ifm-font-color-base);
+}
+
+.roadmapTitle {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    border-bottom: none; /* Removed the bottom line */
+}
+
+.roadmapSubtitle {
+    font-size: 1.125rem;
+    max-width: 800px;
+    margin: 0 auto 3rem auto;
+    opacity: 0.8;
+    line-height: 1.6;
+}
+
+/* --- Dark Theme Overrides --- */
+html[data-theme="dark"] .roadmapSection {
+    background: linear-gradient(180deg, #0f172a 0%, #0f172a 100%);
+}
+
+html[data-theme="dark"] .roadmapTitle,
+html[data-theme="dark"] .roadmapSubtitle {
+    color: #ffffff;
+}
+
+html[data-theme="dark"] .roadmapSubtitle {
+    font-size: 0.75rem;
+    padding: 1rem;
+}
+
+/* --- Cards Grid --- */
+.cardsGrid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.5rem;
+}
+
+/* --- Course Card --- */
+.courseCard {
+    position: relative;
+    border-radius: 12px;
+    border: 1px solid var(--ifm-card-border-color);
+    background-color: var(--ifm-card-background-color);
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    transition:
+        transform 0.3s ease,
+        border-color 0.3s ease,
+        box-shadow 0.3s ease;
+    z-index: 1;
+}
+
+.cardTitle {
+    color: --ifm-heading-color;
+}
+.cardDescription,
+.cardTopics {
+    color: var(--ifm-font-color-base);
+}
+
+/* --- Dark Theme Glassmorphism & Upward Flow Animation --- */
+html[data-theme="dark"] .courseCard {
+    background: rgba(36, 39, 58, 0.5); /* Semi-transparent dark bg */
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+    border-color: #3a3f58;
+}
+
+.courseCard::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 0;
+    z-index: -1;
+    transition: height 0.4s ease-in-out;
+}
+
+html[data-theme="dark"] .courseCard::after {
+    background: linear-gradient(0deg, #483d8b 0%, transparent 80%);
+}
+
+/* --- Card Interaction --- */
+.courseCard:hover {
+    transform: translateY(-8px);
+    border-color: var(--ifm-color-primary);
+    box-shadow: var(--ifm-card-box-shadow);
+}
+
+html[data-theme="dark"] .courseCard:hover {
+    border-color: #8b7cff; /* Glowing border color */
+    box-shadow: 0 8px 40px rgba(139, 124, 255, 0.2);
+    background: rgba(36, 39, 58, 0.4); /* More transparent on hover */
+    -webkit-backdrop-filter: blur(15px); /* Enhanced blur on hover */
+    backdrop-filter: blur(15px);
+}
+
+.courseCard:hover::after {
+    height: 100%;
+}
+
+/* --- Badge Elements --- */
+.badge {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    color: #111;
+    padding: 0.25rem 0.6rem;
+    border-radius: 6px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    z-index: 2;
+    overflow: hidden;
+    background-color: var(--ifm-color-secondary);
+    transition:
+        background-color 0.3s ease,
+        color 0.3s ease;
+}
+
+/* Badge Animated Stroke */
+.badge::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 140%;
+    height: 200%;
+    background: conic-gradient(transparent, white, transparent 30%);
+    transform: translate(-50%, -50%);
+    animation: rotating-border 4s linear infinite;
+    z-index: -1;
+}
+
+html[data-theme="dark"] .badge::before {
+    background: conic-gradient(transparent, #daa520, transparent 30%);
+}
+
+.courseCard:hover .badge {
+    background-color: rgba(218, 165, 32, 0.2); /* Goldenrod transparent */
+    color: #daa520;
+    font-weight: bold;
+}
+
+/* --- Card Content --- */
+.cardHeader {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.cardIcon {
+    margin-right: 1rem;
+    color: slateblue;
+}
+html[data-theme="dark"] .cardIcon svg {
+    filter: drop-shadow(0 0 5px rgba(41, 53, 96, 0.5));
+}
+
+.cardBody {
+    flex-grow: 1;
+}
+
+.cardTitle {
+    font-size: 1.3rem;
+    font-weight: 600;
+    margin-bottom: 0.75rem;
+}
+
+.cardDescription {
+    font-size: 0.95rem;
+    opacity: 0.8;
+    margin-bottom: 1rem;
+    line-height: 1.5;
+}
+
+.cardTopics {
+    list-style-type: "✓  ";
+    padding-left: 1rem;
+    font-size: 0.9rem;
+    opacity: 0.9;
+}
+
+.cardTopics li {
+    margin-bottom: 0.5rem;
+}
+
+.cardFooter {
+    border-top: 1px solid var(--ifm-card-border-color);
+    margin-top: 1.5rem;
+    padding-top: 1rem;
+}
+html[data-theme="dark"] .cardFooter {
+    border-color: #3a3f58;
+}
+
+.cardTimeframe {
+    font-family: var(--ifm-font-family-monospace);
+    font-size: 0.875rem;
+    color: var(--ifm-font-color-secondary);
+    text-align: center;
+    font-weight: 500;
+}
+
+/* --- Responsiveness --- */
+@media (max-width: 996px) {
+    .cardsGrid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .cardsGrid {
+        grid-template-columns: 1fr;
+    }
+    .roadmapTitle {
+        font-size: 2rem;
+    }
+}

@@ -1,0 +1,203 @@
+.pa-stage {
+    width: 100%; /* Take full width of its parent */
+    /* max-width: 700px; */ /* Removed fixed max-width */
+    /* height: 540px; */ /* Removed fixed height */
+    aspect-ratio: 920 / 580; /* Based on SVG viewBox="0 0 920 580" */
+    margin: auto;
+    position: relative;
+    background-size: 40px 40px;
+    border-radius: 20px;
+    overflow: hidden;
+}
+
+.pa-connections {
+    position: absolute;
+    inset: 0;
+}
+
+.pa-eyes {
+    position: absolute;
+    top: 6%;
+    left: 50%;
+    display: flex;
+    gap: 14px;
+    transform: translateX(-50%);
+}
+
+.pa-eye {
+    width: 18px;
+    height: 18px;
+    border-radius: 4px;
+    background: #6a5acd;
+    box-shadow: 0 0 12px #6a5acd;
+    animation: blink 3s infinite;
+}
+
+@keyframes blink {
+    80%,
+    100% {
+        transform: scaleY(1);
+    }
+    85% {
+        transform: scaleY(0.2);
+    }
+}
+
+.pa-center-card {
+    width: 230px; /* (230 / 920) * 100% */
+    height: 240px; /* (240 / 580) * 100% */
+    border-radius: 20px;
+    background: rgba(255, 255, 255, 0.02);
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border: 1px solid #5848b8; /* Use vw for relative border */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.pa-core {
+    width: 110px; /* (110 / 230) * 100% */
+    height: 110px; /* (110 / 240) * 100% */
+    border-radius: 50%;
+    border: 2px solid #6a5acd; /* Use vw for relative border */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.pa-inner {
+    width: 45px; /* (45 / 110) * 100% */
+    height: 45px; /* (45 / 110) * 100% */
+    background: #6a5acd;
+    border-radius: 50%;
+    box-shadow: 0 0 20px #6a5acd;
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    50% {
+        transform: scale(1.15);
+    }
+}
+
+.pa-node {
+    width: 160px;
+    height: 90px;
+    border-radius: 14px;
+    position: absolute;
+    background: rgba(8, 25, 45, 0.7);
+    border: 1px solid #5848b8;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    text-align: center;
+}
+
+.pa-top {
+    top: 4%;
+    left: 50%;
+    transform: translateX(-50%);
+}
+.pa-bottom {
+    bottom: 5%;
+    left: 50%;
+    transform: translateX(-50%);
+}
+.pa-right {
+    right: 3%;
+    top: 50%;
+    transform: translateY(-50%);
+}
+.pa-left {
+    left: 3%;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.pa-title {
+    font-weight: 700;
+    color: #6a5acd;
+    letter-spacing: 1px;
+}
+
+.pa-sub {
+    font-size: 12px;
+    color: white;
+}
+
+.pa-badge {
+    position: absolute;
+    padding: 8px 14px;
+    border-radius: 8px;
+    background: rgba(0, 0, 0, 0.6);
+    border: 1px solid #6a5acd;
+    color: #6a5acd;
+    font-size: 13px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.pa-sim {
+    top: 2%;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.pa-hw {
+    left: 2%;
+    bottom: 10%;
+}
+
+.dot {
+    width: 10px;
+    height: 10px;
+    background: #6a5acd;
+    border-radius: 50%;
+}
+
+.dot.green {
+    background: #6a5acd;
+}
+
+.pa-foot {
+    width: 40px;
+    height: 60px;
+    background: rgba(255, 255, 255, 0.03);
+    position: absolute;
+    bottom: 13%;
+    border: 1px solid #5848b8;
+    border-radius: 10px;
+}
+
+.pa-f1 {
+    left: 45%;
+}
+.pa-f2 {
+    left: 52%;
+}
+
+/* --- Continuous Loop Animation --- */
+.pa-loop-path {
+    stroke: #6a5acd;
+    stroke-width: 2;
+    fill: none;
+    /* The "slashes" effect */
+    stroke-dasharray: 10 15;
+    /* The animation */
+    animation: moveDashes 3s linear infinite;
+}
+
+@keyframes moveDashes {
+    from {
+        stroke-dashoffset: 0;
+    }
+    to {
+        stroke-dashoffset: -25; /* A value equal to the sum of dasharray (10 + 15) */
+    }
+}

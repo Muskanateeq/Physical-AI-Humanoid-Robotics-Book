@@ -1,0 +1,472 @@
+# OpenAPI Contract: Docusaurus RAG Chatbot API
+
+```yaml
+openapi: 3.0.3
+info:
+  title: Docusaurus RAG Chatbot API
+  description: API for the Docusaurus-integrated RAG chatbot with dual-mode functionality
+  version: 1.0.0
+servers:
+  - url: http://localhost:8000
+    description: Development server
+  - url: https://your-production-url.com
+    description: Production server
+
+paths:
+  /chat:
+    post:
+      summary: Normal mode RAG chat
+      description: Send a message and receive a response based on book content from Qdrant
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - message
+              properties:
+                message:
+                  type: string
+                  description: The user's message/question
+                  example: "What is ROS 2?"
+                sessionId:
+                  type: string
+                  description: Session identifier (optional, will be created if not provided)
+                  example: "session-123"
+                mode:
+                  type: string
+                  enum: [normal]
+                  default: normal
+                  description: Chat mode (normal mode queries Qdrant)
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  response:
+                    type: string
+                    description: The AI-generated response
+                    example: "ROS 2 is a set of libraries and tools..."
+                  sessionId:
+                    type: string
+                    description: The session identifier
+                    example: "session-123"
+                  timestamp:
+                    type: string
+                    format: date-time
+                    description: When the response was generated
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /select-and-chat:
+    post:
+      summary: Selected text mode chat
+      description: Send a question about selected text only (no Qdrant query)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - selectedText
+                - question
+              properties:
+                selectedText:
+                  type: string
+                  description: The text selected by the user
+                  example: "ROS 2 is a set of libraries and tools that help you build robot applications."
+                question:
+                  type: string
+                  description: The user's question about the selected text
+                  example: "What does this mean?"
+                sessionId:
+                  type: string
+                  description: Session identifier (optional, will be created if not provided)
+                  example: "session-123"
+                mode:
+                  type: string
+                  enum: [selected-text]
+                  default: selected-text
+                  description: Chat mode (selected-text mode uses only provided text)
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  response:
+                    type: string
+                    description: The AI-generated response
+                    example: "This means that ROS 2 provides libraries and tools for building robot applications..."
+                  sessionId:
+                    type: string
+                    description: The session identifier
+                    example: "session-123"
+                  timestamp:
+                    type: string
+                    format: date-time
+                    description: When the response was generated
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /history:
+    get:
+      summary: Get chat history
+      description: Retrieve the chat history for a specific session
+      parameters:
+        - name: sessionId
+          in: query
+          required: true
+          schema:
+            type: string
+          description: The session identifier
+      responses:
+        '200':
+          description: Chat history retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  messages:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ChatMessage'
+                  sessionId:
+                    type: string
+                    description: The session identifier
+                  createdAt:
+                    type: string
+                    format: date-time
+                    description: When the session was created
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Session not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+    delete:
+      summary: Clear chat history
+      description: Delete all messages in a specific session
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - sessionId
+              properties:
+                sessionId:
+                  type: string
+                  description: The session identifier to clear
+      responses:
+        '200':
+          description: Chat history cleared successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /history/list:
+    get:
+      summary: Get session list
+      description: Retrieve a list of chat sessions for a user
+      parameters:
+        - name: userId
+          in: query
+          required: false
+          schema:
+            type: string
+          description: The user identifier (optional)
+      responses:
+        '200':
+          description: Session list retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sessions:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                          description: Session identifier
+                        title:
+                          type: string
+                          description: Session title
+                        lastMessage:
+                          type: string
+                          description: Preview of the last message
+                        timestamp:
+                          type: string
+                          format: date-time
+                          description: When the session was last updated
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /feedback:
+    post:
+      summary: Submit feedback on message
+      description: Provide like/dislike feedback on a specific message
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - messageId
+                - feedback
+              properties:
+                messageId:
+                  type: string
+                  description: The message identifier
+                feedback:
+                  type: string
+                  enum: [like, dislike]
+                  description: The type of feedback
+                comment:
+                  type: string
+                  description: Optional comment with feedback
+      responses:
+        '200':
+          description: Feedback submitted successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+    get:
+      summary: Get feedback statistics
+      description: Retrieve feedback statistics for a session
+      parameters:
+        - name: sessionId
+          in: query
+          required: false
+          schema:
+            type: string
+          description: The session identifier (optional)
+      responses:
+        '200':
+          description: Feedback statistics retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  likes:
+                    type: number
+                    description: Number of likes
+                  dislikes:
+                    type: number
+                    description: Number of dislikes
+                  total:
+                    type: number
+                    description: Total feedback count
+
+  /voice/generate:
+    post:
+      summary: Generate voice from text
+      description: Convert text to speech with robotic voice
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - text
+              properties:
+                text:
+                  type: string
+                  description: Text to convert to speech
+                voiceType:
+                  type: string
+                  enum: [robotic, natural]
+                  default: robotic
+                  description: Type of voice to generate
+      responses:
+        '200':
+          description: Voice generated successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  audioUrl:
+                    type: string
+                    description: URL to the generated audio file
+                  success:
+                    type: boolean
+                    example: true
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /voice/preferences:
+    get:
+      summary: Get voice preferences
+      description: Retrieve user's voice mode preferences
+      parameters:
+        - name: sessionId
+          in: query
+          required: true
+          schema:
+            type: string
+          description: The session identifier
+      responses:
+        '200':
+          description: Voice preferences retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  enabled:
+                    type: boolean
+                    description: Whether voice mode is enabled
+                  voiceType:
+                    type: string
+                    enum: [robotic, natural]
+                    description: Preferred voice type
+    post:
+      summary: Update voice preferences
+      description: Update user's voice mode preferences
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - sessionId
+                - enabled
+              properties:
+                sessionId:
+                  type: string
+                  description: The session identifier
+                enabled:
+                  type: boolean
+                  description: Whether voice mode should be enabled
+                voiceType:
+                  type: string
+                  enum: [robotic, natural]
+                  default: robotic
+                  description: Preferred voice type
+      responses:
+        '200':
+          description: Voice preferences updated successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+components:
+  schemas:
+    ChatMessage:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Message identifier
+        role:
+          type: string
+          enum: [user, assistant]
+          description: The sender of the message
+        content:
+          type: string
+          description: The message content
+        timestamp:
+          type: string
+          format: date-time
+          description: When the message was created
+        source_type:
+          type: string
+          enum: [normal, selected-text]
+          description: How the response was generated
+        selected_text:
+          type: string
+          description: Text that was selected by user (for selected-text mode)
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: string
+          description: Error message
+        code:
+          type: string
+          description: Error code
+```

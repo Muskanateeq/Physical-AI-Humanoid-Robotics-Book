@@ -1,0 +1,28 @@
+version: '3.8'
+
+services:
+  backend:
+    build: .
+    ports:
+      - "8000:8000"
+    environment:
+      - DATABASE_URL=postgresql://auth_user:auth_password@db:5432/auth_db
+      - SECRET_KEY=your-super-secret-key-here-make-it-long-and-random
+    depends_on:
+      - db
+    volumes:
+      - .:/app
+
+  db:
+    image: postgres:15
+    environment:
+      - POSTGRES_DB=auth_db
+      - POSTGRES_USER=auth_user
+      - POSTGRES_PASSWORD=auth_password
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:

@@ -1,0 +1,533 @@
+{
+  "theme.ErrorPageContent.title": {
+    "message": "This page crashed.",
+    "description": "The title of the fallback page when the page crashed"
+  },
+  "theme.BackToTopButton.buttonAriaLabel": {
+    "message": "Scroll back to top",
+    "description": "The ARIA label for the back to top button"
+  },
+  "theme.blog.archive.title": {
+    "message": "Archive",
+    "description": "The page & hero title of the blog archive page"
+  },
+  "theme.blog.archive.description": {
+    "message": "Archive",
+    "description": "The page & hero description of the blog archive page"
+  },
+  "theme.blog.paginator.navAriaLabel": {
+    "message": "Blog list page navigation",
+    "description": "The ARIA label for the blog pagination"
+  },
+  "theme.blog.paginator.newerEntries": {
+    "message": "Newer entries",
+    "description": "The label used to navigate to the newer blog posts page (previous page)"
+  },
+  "theme.blog.paginator.olderEntries": {
+    "message": "Older entries",
+    "description": "The label used to navigate to the older blog posts page (next page)"
+  },
+  "theme.blog.post.paginator.navAriaLabel": {
+    "message": "Blog post page navigation",
+    "description": "The ARIA label for the blog posts pagination"
+  },
+  "theme.blog.post.paginator.newerPost": {
+    "message": "Newer post",
+    "description": "The blog post button label to navigate to the newer/previous post"
+  },
+  "theme.blog.post.paginator.olderPost": {
+    "message": "Older post",
+    "description": "The blog post button label to navigate to the older/next post"
+  },
+  "theme.tags.tagsPageLink": {
+    "message": "View all tags",
+    "description": "The label of the link targeting the tag list page"
+  },
+  "theme.colorToggle.ariaLabel.mode.system": {
+    "message": "system mode",
+    "description": "The name for the system color mode"
+  },
+  "theme.colorToggle.ariaLabel.mode.light": {
+    "message": "light mode",
+    "description": "The name for the light color mode"
+  },
+  "theme.colorToggle.ariaLabel.mode.dark": {
+    "message": "dark mode",
+    "description": "The name for the dark color mode"
+  },
+  "theme.colorToggle.ariaLabel": {
+    "message": "Switch between dark and light mode (currently {mode})",
+    "description": "The ARIA label for the color mode toggle"
+  },
+  "theme.docs.breadcrumbs.navAriaLabel": {
+    "message": "Breadcrumbs",
+    "description": "The ARIA label for the breadcrumbs"
+  },
+  "theme.docs.DocCard.categoryDescription.plurals": {
+    "message": "1 item|{count} items",
+    "description": "The default description for a category card in the generated index about how many items this category includes"
+  },
+  "theme.docs.paginator.navAriaLabel": {
+    "message": "Docs pages",
+    "description": "The ARIA label for the docs pagination"
+  },
+  "theme.docs.paginator.previous": {
+    "message": "Previous",
+    "description": "The label used to navigate to the previous doc"
+  },
+  "theme.docs.paginator.next": {
+    "message": "Next",
+    "description": "The label used to navigate to the next doc"
+  },
+  "theme.docs.tagDocListPageTitle.nDocsTagged": {
+    "message": "One doc tagged|{count} docs tagged",
+    "description": "Pluralized label for \"{count} docs tagged\". Use as much plural forms (separated by \"|\") as your language support (see https://www.unicode.org/cldr/cldr-aux/charts/34/supplemental/language_plural_rules.html)"
+  },
+  "theme.docs.tagDocListPageTitle": {
+    "message": "{nDocsTagged} with \"{tagName}\"",
+    "description": "The title of the page for a docs tag"
+  },
+  "theme.docs.versionBadge.label": {
+    "message": "Version: {versionLabel}"
+  },
+  "theme.docs.versions.unreleasedVersionLabel": {
+    "message": "This is unreleased documentation for {siteTitle} {versionLabel} version.",
+    "description": "The label used to tell the user that he's browsing an unreleased doc version"
+  },
+  "theme.docs.versions.unmaintainedVersionLabel": {
+    "message": "This is documentation for {siteTitle} {versionLabel}, which is no longer actively maintained.",
+    "description": "The label used to tell the user that he's browsing an unmaintained doc version"
+  },
+  "theme.docs.versions.latestVersionSuggestionLabel": {
+    "message": "For up-to-date documentation, see the {latestVersionLink} ({versionLabel}).",
+    "description": "The label used to tell the user to check the latest version"
+  },
+  "theme.docs.versions.latestVersionLinkLabel": {
+    "message": "latest version",
+    "description": "The label used for the latest version suggestion link label"
+  },
+  "theme.common.editThisPage": {
+    "message": "Edit this page",
+    "description": "The link label to edit the current page"
+  },
+  "theme.common.headingLinkTitle": {
+    "message": "Direct link to {heading}",
+    "description": "Title for link to heading"
+  },
+  "theme.lastUpdated.atDate": {
+    "message": " on {date}",
+    "description": "The words used to describe on which date a page has been last updated"
+  },
+  "theme.lastUpdated.byUser": {
+    "message": " by {user}",
+    "description": "The words used to describe by who the page has been last updated"
+  },
+  "theme.lastUpdated.lastUpdatedAtBy": {
+    "message": "Last updated{atDate}{byUser}",
+    "description": "The sentence used to display when a page has been last updated, and by who"
+  },
+  "theme.navbar.mobileVersionsDropdown.label": {
+    "message": "Versions",
+    "description": "The label for the navbar versions dropdown on mobile view"
+  },
+  "theme.NotFound.title": {
+    "message": "Page Not Found",
+    "description": "The title of the 404 page"
+  },
+  "theme.tags.tagsListLabel": {
+    "message": "Tags:",
+    "description": "The label alongside a tag list"
+  },
+  "theme.admonition.caution": {
+    "message": "caution",
+    "description": "The default label used for the Caution admonition (:::caution)"
+  },
+  "theme.admonition.danger": {
+    "message": "danger",
+    "description": "The default label used for the Danger admonition (:::danger)"
+  },
+  "theme.admonition.info": {
+    "message": "info",
+    "description": "The default label used for the Info admonition (:::info)"
+  },
+  "theme.admonition.note": {
+    "message": "note",
+    "description": "The default label used for the Note admonition (:::note)"
+  },
+  "theme.admonition.tip": {
+    "message": "tip",
+    "description": "The default label used for the Tip admonition (:::tip)"
+  },
+  "theme.admonition.warning": {
+    "message": "warning",
+    "description": "The default label used for the Warning admonition (:::warning)"
+  },
+  "theme.AnnouncementBar.closeButtonAriaLabel": {
+    "message": "Close",
+    "description": "The ARIA label for close button of announcement bar"
+  },
+  "theme.blog.sidebar.navAriaLabel": {
+    "message": "Blog recent posts navigation",
+    "description": "The ARIA label for recent posts in the blog sidebar"
+  },
+  "theme.DocSidebarItem.expandCategoryAriaLabel": {
+    "message": "Expand sidebar category '{label}'",
+    "description": "The ARIA label to expand the sidebar category"
+  },
+  "theme.DocSidebarItem.collapseCategoryAriaLabel": {
+    "message": "Collapse sidebar category '{label}'",
+    "description": "The ARIA label to collapse the sidebar category"
+  },
+  "theme.IconExternalLink.ariaLabel": {
+    "message": "(opens in new tab)",
+    "description": "The ARIA label for the external link icon"
+  },
+  "theme.NavBar.navAriaLabel": {
+    "message": "Main",
+    "description": "The ARIA label for the main navigation"
+  },
+  "theme.navbar.mobileLanguageDropdown.label": {
+    "message": "Languages",
+    "description": "The label for the mobile language switcher dropdown"
+  },
+  "theme.NotFound.p1": {
+    "message": "We could not find what you were looking for.",
+    "description": "The first paragraph of the 404 page"
+  },
+  "theme.NotFound.p2": {
+    "message": "Please contact the owner of the site that linked you to the original URL and let them know their link is broken.",
+    "description": "The 2nd paragraph of the 404 page"
+  },
+  "theme.TOCCollapsible.toggleButtonLabel": {
+    "message": "On this page",
+    "description": "The label used by the button on the collapsible TOC component"
+  },
+  "theme.blog.post.readMore": {
+    "message": "Read more",
+    "description": "The label used in blog post item excerpts to link to full blog posts"
+  },
+  "theme.blog.post.readMoreLabel": {
+    "message": "Read more about {title}",
+    "description": "The ARIA label for the link to full blog posts from excerpts"
+  },
+  "theme.blog.post.readingTime.plurals": {
+    "message": "One min read|{readingTime} min read",
+    "description": "Pluralized label for \"{readingTime} min read\". Use as much plural forms (separated by \"|\") as your language support (see https://www.unicode.org/cldr/cldr-aux/charts/34/supplemental/language_plural_rules.html)"
+  },
+  "theme.CodeBlock.copy": {
+    "message": "Copy",
+    "description": "The copy button label on code blocks"
+  },
+  "theme.CodeBlock.copied": {
+    "message": "Copied",
+    "description": "The copied button label on code blocks"
+  },
+  "theme.CodeBlock.copyButtonAriaLabel": {
+    "message": "Copy code to clipboard",
+    "description": "The ARIA label for copy code blocks button"
+  },
+  "theme.CodeBlock.wordWrapToggle": {
+    "message": "Toggle word wrap",
+    "description": "The title attribute for toggle word wrapping button of code block lines"
+  },
+  "theme.docs.breadcrumbs.home": {
+    "message": "Home page",
+    "description": "The ARIA label for the home page in the breadcrumbs"
+  },
+  "theme.docs.sidebar.collapseButtonTitle": {
+    "message": "Collapse sidebar",
+    "description": "The title attribute for collapse button of doc sidebar"
+  },
+  "theme.docs.sidebar.collapseButtonAriaLabel": {
+    "message": "Collapse sidebar",
+    "description": "The title attribute for collapse button of doc sidebar"
+  },
+  "theme.docs.sidebar.navAriaLabel": {
+    "message": "Docs sidebar",
+    "description": "The ARIA label for the sidebar navigation"
+  },
+  "theme.docs.sidebar.closeSidebarButtonAriaLabel": {
+    "message": "Close navigation bar",
+    "description": "The ARIA label for close button of mobile sidebar"
+  },
+  "theme.navbar.mobileSidebarSecondaryMenu.backButtonLabel": {
+    "message": "← Back to main menu",
+    "description": "The label of the back button to return to main menu, inside the mobile navbar sidebar secondary menu (notably used to display the docs sidebar)"
+  },
+  "theme.docs.sidebar.toggleSidebarButtonAriaLabel": {
+    "message": "Toggle navigation bar",
+    "description": "The ARIA label for hamburger menu button of mobile navigation"
+  },
+  "theme.navbar.mobileDropdown.collapseButton.expandAriaLabel": {
+    "message": "Expand the dropdown",
+    "description": "The ARIA label of the button to expand the mobile dropdown navbar item"
+  },
+  "theme.navbar.mobileDropdown.collapseButton.collapseAriaLabel": {
+    "message": "Collapse the dropdown",
+    "description": "The ARIA label of the button to collapse the mobile dropdown navbar item"
+  },
+  "theme.docs.sidebar.expandButtonTitle": {
+    "message": "Expand sidebar",
+    "description": "The ARIA label and title attribute for expand button of doc sidebar"
+  },
+  "theme.docs.sidebar.expandButtonAriaLabel": {
+    "message": "Expand sidebar",
+    "description": "The ARIA label and title attribute for expand button of doc sidebar"
+  },
+  "theme.blog.post.plurals": {
+    "message": "One post|{count} posts",
+    "description": "Pluralized label for \"{count} posts\". Use as much plural forms (separated by \"|\") as your language support (see https://www.unicode.org/cldr/cldr-aux/charts/34/supplemental/language_plural_rules.html)"
+  },
+  "theme.blog.tagTitle": {
+    "message": "{nPosts} tagged with \"{tagName}\"",
+    "description": "The title of the page for a blog tag"
+  },
+  "theme.blog.author.pageTitle": {
+    "message": "{authorName} - {nPosts}",
+    "description": "The title of the page for a blog author"
+  },
+  "theme.blog.authorsList.pageTitle": {
+    "message": "Authors",
+    "description": "The title of the authors page"
+  },
+  "theme.blog.authorsList.viewAll": {
+    "message": "View all authors",
+    "description": "The label of the link targeting the blog authors page"
+  },
+  "theme.blog.author.noPosts": {
+    "message": "This author has not written any posts yet.",
+    "description": "The text for authors with 0 blog post"
+  },
+  "theme.contentVisibility.unlistedBanner.title": {
+    "message": "Unlisted page",
+    "description": "The unlisted content banner title"
+  },
+  "theme.contentVisibility.unlistedBanner.message": {
+    "message": "This page is unlisted. Search engines will not index it, and only users having a direct link can access it.",
+    "description": "The unlisted content banner message"
+  },
+  "theme.contentVisibility.draftBanner.title": {
+    "message": "Draft page",
+    "description": "The draft content banner title"
+  },
+  "theme.contentVisibility.draftBanner.message": {
+    "message": "This page is a draft. It will only be visible in dev and be excluded from the production build.",
+    "description": "The draft content banner message"
+  },
+  "theme.ErrorPageContent.tryAgain": {
+    "message": "Try again",
+    "description": "The label of the button to try again rendering when the React error boundary captures an error"
+  },
+  "theme.common.skipToMainContent": {
+    "message": "Skip to main content",
+    "description": "The skip to content label used for accessibility, allowing to rapidly navigate to main content with keyboard tab/enter navigation"
+  },
+  "theme.tags.tagsPageTitle": {
+    "message": "Tags",
+    "description": "The title of the tag list page"
+  },
+  "homepage.hero.title": {
+    "message": "فزیکل انٹیلیجنس کا مستقبل بنائیں",
+    "description": "Homepage hero main title"
+  },
+  "homepage.hero.subtitle": {
+    "message": "فزیکل AI اور ہیومنائیڈ روبوٹکس ایک مکمل، عملی سیکھنے کا سفر ہے۔ ROS 2 اور سمیولیشن سے لے کر Vision-Language-Action ماڈلز تک۔",
+    "description": "Homepage hero subtitle"
+  },
+  "homepage.hero.button.startLearning": {
+    "message": "سیکھنا شروع کریں",
+    "description": "Start Learning button"
+  },
+  "homepage.hero.button.tryAI": {
+    "message": "AI اسسٹنٹ آزمائیں",
+    "description": "Try AI Assistant button"
+  },
+  "homepage.courseRoadmap.title": {
+    "message": "بنیادوں سے سوچنے والی مشینوں تک",
+    "description": "Course roadmap section title"
+  },
+  "homepage.courseRoadmap.subtitle": {
+    "message": "کورس کا جائزہ: فزیکل AI میں مہارت حاصل کریں۔ ROS 2، Gazebo، اور NVIDIA Isaac استعمال کرتے ہوئے قدرتی انسانی تعاملات کی صلاحیت رکھنے والے ہیومنائیڈ روبوٹس ڈیزائن، سمیولیٹ، اور تعینات کریں۔",
+    "description": "Course roadmap subtitle"
+  },
+  "homepage.courseRoadmap.module1.badge": {
+    "message": "بنیاد",
+    "description": "Module 1 badge"
+  },
+  "homepage.courseRoadmap.module1.title": {
+    "message": "روبوٹک اعصابی نظام (ROS 2)",
+    "description": "Module 1 title"
+  },
+  "homepage.courseRoadmap.module1.description": {
+    "message": "روبوٹ کنٹرول اور Python ایجنٹس کو جوڑنے کے لیے مڈل ویئر۔",
+    "description": "Module 1 description"
+  },
+  "homepage.courseRoadmap.module1.topic1": {
+    "message": "ROS 2 Nodes، Topics، اور Services",
+    "description": "Module 1 topic 1"
+  },
+  "homepage.courseRoadmap.module1.topic2": {
+    "message": "rclpy کے ساتھ Python ایجنٹس",
+    "description": "Module 1 topic 2"
+  },
+  "homepage.courseRoadmap.module1.topic3": {
+    "message": "ہیومنائیڈز کے لیے URDF",
+    "description": "Module 1 topic 3"
+  },
+  "homepage.courseRoadmap.module1.timeframe": {
+    "message": "ہفتے 1-5",
+    "description": "Module 1 timeframe"
+  },
+  "homepage.courseRoadmap.module2.badge": {
+    "message": "سمیولیشن",
+    "description": "Module 2 badge"
+  },
+  "homepage.courseRoadmap.module2.title": {
+    "message": "ڈیجیٹل ٹوئن",
+    "description": "Module 2 title"
+  },
+  "homepage.courseRoadmap.module2.description": {
+    "message": "فزکس سمیولیشن، اعلیٰ معیار کے ماحول، اور سینسر انضمام۔",
+    "description": "Module 2 description"
+  },
+  "homepage.courseRoadmap.module2.topic1": {
+    "message": "Gazebo فزکس اور کشش ثقل",
+    "description": "Module 2 topic 1"
+  },
+  "homepage.courseRoadmap.module2.topic2": {
+    "message": "Unity HRI ویژولائزیشن",
+    "description": "Module 2 topic 2"
+  },
+  "homepage.courseRoadmap.module2.topic3": {
+    "message": "سینسرز: LiDAR، Depth، IMU",
+    "description": "Module 2 topic 3"
+  },
+  "homepage.courseRoadmap.module2.timeframe": {
+    "message": "ہفتے 6-7",
+    "description": "Module 2 timeframe"
+  },
+  "homepage.courseRoadmap.module3.badge": {
+    "message": "AI سے چلنے والا",
+    "description": "Module 3 badge"
+  },
+  "homepage.courseRoadmap.module3.title": {
+    "message": "AI-روبوٹ دماغ",
+    "description": "Module 3 title"
+  },
+  "homepage.courseRoadmap.module3.description": {
+    "message": "جدید ادراک، نیویگیشن، اور reinforcement learning۔",
+    "description": "Module 3 description"
+  },
+  "homepage.courseRoadmap.module3.topic1": {
+    "message": "NVIDIA Isaac Sim اور مصنوعی ڈیٹا",
+    "description": "Module 3 topic 1"
+  },
+  "homepage.courseRoadmap.module3.topic2": {
+    "message": "Isaac ROS اور VSLAM",
+    "description": "Module 3 topic 2"
+  },
+  "homepage.courseRoadmap.module3.topic3": {
+    "message": "Nav2 راستہ منصوبہ بندی",
+    "description": "Module 3 topic 3"
+  },
+  "homepage.courseRoadmap.module3.timeframe": {
+    "message": "ہفتے 8-10",
+    "description": "Module 3 timeframe"
+  },
+  "homepage.courseRoadmap.module4.badge": {
+    "message": "کیپ اسٹون",
+    "description": "Module 4 badge"
+  },
+  "homepage.courseRoadmap.module4.title": {
+    "message": "Vision-Language-Action (VLA)",
+    "description": "Module 4 title"
+  },
+  "homepage.courseRoadmap.module4.description": {
+    "message": "گفتگو کنٹرول کے لیے LLMs اور روبوٹکس کا سنگم۔",
+    "description": "Module 4 description"
+  },
+  "homepage.courseRoadmap.module4.topic1": {
+    "message": "آواز سے عمل (Whisper)",
+    "description": "Module 4 topic 1"
+  },
+  "homepage.courseRoadmap.module4.topic2": {
+    "message": "LLM علمی منصوبہ بندی",
+    "description": "Module 4 topic 2"
+  },
+  "homepage.courseRoadmap.module4.topic3": {
+    "message": "پروجیکٹ: خودمختار ہیومنائیڈ",
+    "description": "Module 4 topic 3"
+  },
+  "homepage.courseRoadmap.module4.timeframe": {
+    "message": "ہفتے 11-13",
+    "description": "Module 4 timeframe"
+  },
+  "homepage.transformationRoadmap.title": {
+    "message": "آپ کا تبدیلی کا نقشہ",
+    "description": "Transformation roadmap title"
+  },
+  "homepage.transformationRoadmap.step1.title": {
+    "message": "بنیادیں",
+    "description": "Roadmap step 1 title"
+  },
+  "homepage.transformationRoadmap.step1.description": {
+    "message": "روبوٹکس کے اصولوں اور AI کی بنیادی باتوں کی بنیادی سمجھ قائم کریں۔",
+    "description": "Roadmap step 1 description"
+  },
+  "homepage.transformationRoadmap.step2.title": {
+    "message": "سینسرز",
+    "description": "Roadmap step 2 title"
+  },
+  "homepage.transformationRoadmap.step2.description": {
+    "message": "مختلف سینسر ٹیکنالوجیز اور ادراک کے لیے ان کے انضمام میں غوطہ لگائیں۔",
+    "description": "Roadmap step 2 description"
+  },
+  "homepage.transformationRoadmap.step3.title": {
+    "message": "حرکت اور کنٹرول",
+    "description": "Roadmap step 3 title"
+  },
+  "homepage.transformationRoadmap.step3.description": {
+    "message": "روبوٹ کی حرکت، inverse kinematics، اور کنٹرول سسٹمز کو پروگرام کرنا سیکھیں۔",
+    "description": "Roadmap step 3 description"
+  },
+  "homepage.transformationRoadmap.step4.title": {
+    "message": "AI دماغ",
+    "description": "Roadmap step 4 title"
+  },
+  "homepage.transformationRoadmap.step4.description": {
+    "message": "ذہین فیصلہ سازی، راستہ منصوبہ بندی، اور جدید AI رویے تیار کریں۔",
+    "description": "Roadmap step 4 description"
+  },
+  "homepage.transformationRoadmap.step5.title": {
+    "message": "انسان-روبوٹ تعامل (HRI)",
+    "description": "Roadmap step 5 title"
+  },
+  "homepage.transformationRoadmap.step5.description": {
+    "message": "انسانوں کے لیے روبوٹس کے ساتھ قدرتی اور بدیہی طریقوں سے تعامل پر توجہ دیں۔",
+    "description": "Roadmap step 5 description"
+  },
+  "homepage.transformationRoadmap.step6.title": {
+    "message": "حتمی ہیومنائیڈ پروجیکٹ",
+    "description": "Roadmap step 6 title"
+  },
+  "homepage.transformationRoadmap.step6.description": {
+    "message": "تمام سیکھے ہوئے تصورات کو ایک جامع ہیومنائیڈ روبوٹکس پروجیکٹ میں ضم کریں۔",
+    "description": "Roadmap step 6 description"
+  },
+  "homepage.aboutCreator.title": {
+    "message": "تخلیق کار کے بارے میں",
+    "description": "About creator section title"
+  },
+  "homepage.aboutCreator.description": {
+    "message": "مسکان عتیق سے ملیں، 'فزیکل AI اور ہیومنائیڈ روبوٹکس' کے پیچھے صاحب بصیرت۔ ذہین مشینوں کے لیے جذبے اور جدید AI کی گہری سمجھ کے ساتھ، مسکان نے روبوٹکس اور مصنوعی ذہانت کے سنگم کو تلاش کرنے میں سال گزارے ہیں۔ یہ کورس عملی علم کو بانٹنے اور فزیکل انٹیلیجنس کا مستقبل بنانے کے لیے اگلی نسل کے موجدوں کو متاثر کرنے کی خواہش سے پیدا ہوا ہے۔",
+    "description": "About creator description"
+  },
+  "homepage.finalCTA.title": {
+    "message": "AI اور روبوٹکس انقلاب میں شامل ہوں",
+    "description": "Final CTA title"
+  },
+  "homepage.finalCTA.button": {
+    "message": "🚀 مستقبل میں داخل ہوں",
+    "description": "Final CTA button"
+  }
+}
