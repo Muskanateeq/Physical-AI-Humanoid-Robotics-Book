@@ -18,7 +18,7 @@ function FinalCTABanner() {
         <div className={styles.ctaButtons}>
           <Link
             className={clsx('button button--primary button--lg', styles.ctaButton)}
-            to="/docs/module-1-ros2/ros2-basics">
+            to="/docs/module-1-ros2/robotic-system">
             <Translate id="homepage.finalCTA.button">
               🚀 Enter The Future
             </Translate>

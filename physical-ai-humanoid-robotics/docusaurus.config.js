@@ -134,7 +134,7 @@ const config = {
               },
               {
                 label: "Module2 Mini Project",
-                to: "/docs/module-2-simulation/module-2-mini-project",
+                to: "/docs/module-2-simulation/Unity-and-mini-project",
               },
               {
                 label: "Module3 Mini Project",
