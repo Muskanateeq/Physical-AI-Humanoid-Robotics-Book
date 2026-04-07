@@ -20,17 +20,15 @@ const config = {
   },
 
   // Set the production url of your site here
-  url: "https://panaversity.github.io",
+  url: "https://neurobotics-book.vercel.app",
   // Set the /<baseUrl>/ pathname under which your site is served
-  // For GitHub pages deployment, it is often '/<projectName>/'
-  // Use "/" for local development, "/physical-ai-book/" for production
-  baseUrl: process.env.NODE_ENV === 'production' ? "/physical-ai-book/" : "/",
+  baseUrl: "/",
   trailingSlash: true,
 
   // GitHub pages deployment config.
   // If you aren't using GitHub pages, you don't need these.
-  organizationName: "Panaversity", // Usually your GitHub org/user name.
-  projectName: "physical-ai-book", // Usually your repo name.
+  organizationName: "Muskanateeq",
+  projectName: "Physical-AI-Humanoid-Robotics-Book",
   deploymentBranch: "gh-pages",
   onBrokenLinks: "warn",
 
