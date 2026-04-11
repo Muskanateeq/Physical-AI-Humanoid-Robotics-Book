@@ -1,10 +1,9 @@
 // Environment configuration for client-side code
 // Auto-detects production vs development based on hostname
 
-// Production URLs
+// Production URLs (hardcoded)
 const PRODUCTION_CONFIG = {
-  // Use full URL with Vercel domain - proxy will still work
-  AUTH_SERVER_URL: 'https://neurobotics-ai-book.vercel.app/api/auth',
+  AUTH_SERVER_URL: 'https://physical-ai-humanoid-robotics-book-auth.onrender.com',
   BACKEND_API_URL: 'https://physical-ai-humanoid-robotics-book-7mgx.onrender.com',
 };
 
