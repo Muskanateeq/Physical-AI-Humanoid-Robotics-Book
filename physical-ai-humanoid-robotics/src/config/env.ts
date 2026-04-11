@@ -1,9 +1,10 @@
 // Environment configuration for client-side code
 // Auto-detects production vs development based on hostname
 
-// Production URLs (hardcoded)
+// Production URLs
 const PRODUCTION_CONFIG = {
-  AUTH_SERVER_URL: 'https://physical-ai-humanoid-robotics-book-auth.onrender.com',
+  // Use relative path - Vercel will proxy to Render auth server
+  AUTH_SERVER_URL: '/api/auth',
   BACKEND_API_URL: 'https://physical-ai-humanoid-robotics-book-7mgx.onrender.com',
 };
 
