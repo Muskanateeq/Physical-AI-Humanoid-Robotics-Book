@@ -1,11 +1,10 @@
 // API URL configuration for Docusaurus
-const API_BASE_URL = typeof window !== 'undefined'
-  ? window.ENV?.REACT_APP_API_URL || 'http://localhost:8001'
-  : process.env.REACT_APP_API_URL || 'http://localhost:8001';
+// Import from centralized env config
+import { ENV } from '../config/env';
 
 // Export for use in Docusaurus components
 export const API_CONFIG = {
-  BASE_URL: API_BASE_URL,
-  CHATKIT_URL: `${API_BASE_URL}/chatkit`,
-  AUTH_URL: `${API_BASE_URL}/auth`,
+  BASE_URL: ENV.BACKEND_API_URL,
+  CHATKIT_URL: ENV.CHATKIT_API_URL,
+  AUTH_URL: ENV.AUTH_SERVER_URL,
 };
