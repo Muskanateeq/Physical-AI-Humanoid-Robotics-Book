@@ -1,35 +1,40 @@
 // Environment configuration for client-side code
-// Uses Docusaurus customFields to access build-time environment variables
+// Auto-detects production vs development based on hostname
 
-import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
-
-// Hook to get environment config in React components
-export function useEnv() {
-  const { siteConfig } = useDocusaurusContext();
-  return {
-    AUTH_SERVER_URL: siteConfig.customFields?.AUTH_SERVER_URL as string,
-    BACKEND_API_URL: siteConfig.customFields?.BACKEND_API_URL as string,
-    get CHATKIT_API_URL() {
-      return `${this.BACKEND_API_URL}/chatkit`;
-    }
-  };
-}
-
-// For non-React contexts (module-level initialization)
-// These are set at build time from docusaurus.config.js
-export const ENV = {
-  AUTH_SERVER_URL: 'http://localhost:3001', // Fallback for SSR/build
-  BACKEND_API_URL: 'http://localhost:8001', // Fallback for SSR/build
-  get CHATKIT_API_URL() {
-    return `${this.BACKEND_API_URL}/chatkit`;
-  }
+// Production URLs (hardcoded)
+const PRODUCTION_CONFIG = {
+  AUTH_SERVER_URL: 'https://physical-ai-humanoid-robotics-book-auth.onrender.com',
+  BACKEND_API_URL: 'https://physical-ai-humanoid-robotics-book-7mgx.onrender.com',
 };
 
-// Initialize from window if available (client-side)
-if (typeof window !== 'undefined' && (window as any).docusaurus) {
-  const customFields = (window as any).docusaurus.siteConfig?.customFields;
-  if (customFields) {
-    ENV.AUTH_SERVER_URL = customFields.AUTH_SERVER_URL || ENV.AUTH_SERVER_URL;
-    ENV.BACKEND_API_URL = customFields.BACKEND_API_URL || ENV.BACKEND_API_URL;
+// Development URLs
+const DEVELOPMENT_CONFIG = {
+  AUTH_SERVER_URL: 'http://localhost:3001',
+  BACKEND_API_URL: 'http://localhost:8001',
+};
+
+// Detect environment based on hostname
+function getConfig() {
+  if (typeof window === 'undefined') {
+    // SSR/Build time - use development as fallback
+    return DEVELOPMENT_CONFIG;
   }
+
+  const hostname = window.location.hostname;
+  const isProduction = hostname.includes('vercel.app') || hostname.includes('neurobotics-ai-book');
+
+  return isProduction ? PRODUCTION_CONFIG : DEVELOPMENT_CONFIG;
 }
+
+// Export environment configuration
+export const ENV = {
+  get AUTH_SERVER_URL() {
+    return getConfig().AUTH_SERVER_URL;
+  },
+  get BACKEND_API_URL() {
+    return getConfig().BACKEND_API_URL;
+  },
+  get CHATKIT_API_URL() {
+    return `${getConfig().BACKEND_API_URL}/chatkit`;
+  }
+};

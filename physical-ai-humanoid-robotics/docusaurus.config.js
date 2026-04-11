@@ -71,12 +71,6 @@ const config = {
     },
   ],
 
-  // Custom fields for environment variables (accessible in client-side code)
-  customFields: {
-    AUTH_SERVER_URL: process.env.AUTH_SERVER_URL || 'http://localhost:3001',
-    BACKEND_API_URL: process.env.BACKEND_API_URL || 'http://localhost:8001',
-  },
-
   themeConfig:
     /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
     ({
