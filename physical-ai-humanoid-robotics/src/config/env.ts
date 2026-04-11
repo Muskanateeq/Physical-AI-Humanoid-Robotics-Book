@@ -3,8 +3,8 @@
 
 // Production URLs
 const PRODUCTION_CONFIG = {
-  // Use relative path - Vercel will proxy to Render auth server
-  AUTH_SERVER_URL: '/api/auth',
+  // Use full URL with Vercel domain - proxy will still work
+  AUTH_SERVER_URL: 'https://neurobotics-ai-book.vercel.app/api/auth',
   BACKEND_API_URL: 'https://physical-ai-humanoid-robotics-book-7mgx.onrender.com',
 };
 
