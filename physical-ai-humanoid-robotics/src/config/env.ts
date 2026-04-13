@@ -3,7 +3,8 @@
 
 // Production URLs (hardcoded)
 const PRODUCTION_CONFIG = {
-  AUTH_SERVER_URL: 'https://physical-ai-humanoid-robotics-book-auth.onrender.com',
+  // Empty string = same domain (Vercel will handle /api/auth/* via serverless function)
+  AUTH_SERVER_URL: '',
   BACKEND_API_URL: 'https://physical-ai-humanoid-robotics-book-7mgx.onrender.com',
 };
 

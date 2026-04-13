@@ -59,3 +59,8 @@ Thumbs.db
 
 # Qdrant local storage
 qdrant_storage/
+
+#Document
+VERCEL-ENV-SETUP.md
+OAUTH-SETUP.md
+DEPLOYMENT-GUIDE.md
