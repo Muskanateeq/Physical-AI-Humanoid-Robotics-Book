@@ -1,12 +1,9 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
-  "functions": {
-    "api/auth/[...auth].mjs": {
-      "memory": 1024,
-      "maxDuration": 10
+  "rewrites": [
+    {
+      "source": "/api/auth/:path*",
+      "destination": "https://physical-ai-humanoid-robotics-book-auth.onrender.com/api/auth/:path*"
     }
-  },
-  "env": {
-    "NODE_ENV": "production"
-  }
+  ]
 }
