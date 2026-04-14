@@ -56,10 +56,11 @@ function getAuth() {
       // JWT configuration
       secret: process.env.BETTER_AUTH_SECRET,
 
-      // Base URL - Use Vercel domain
-      baseURL: process.env.VERCEL_URL
-        ? `https://${process.env.VERCEL_URL}`
-        : process.env.AUTH_BASE_URL || "http://localhost:3000",
+      // Base URL - Use production domain in production, localhost in development
+      // VERCEL_ENV is "production" on production, "preview" on preview, undefined locally
+      baseURL: process.env.VERCEL_ENV === "production"
+        ? "https://neurobotics-ai-book.vercel.app"
+        : "http://localhost:3001",
 
       // Trusted origins - Allow requests from same domain
       trustedOrigins: [
