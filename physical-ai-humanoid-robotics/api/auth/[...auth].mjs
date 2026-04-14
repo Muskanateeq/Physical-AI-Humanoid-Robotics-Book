@@ -36,15 +36,20 @@ function getAuth() {
       },
 
       // Social providers (Google and GitHub)
+      // Only configure if credentials are available
       socialProviders: {
-        google: {
-          clientId: process.env.GOOGLE_CLIENT_ID || "",
-          clientSecret: process.env.GOOGLE_CLIENT_SECRET || "",
-        },
-        github: {
-          clientId: process.env.GITHUB_CLIENT_ID || "",
-          clientSecret: process.env.GITHUB_CLIENT_SECRET || "",
-        },
+        ...(process.env.GOOGLE_CLIENT_ID && process.env.GOOGLE_CLIENT_SECRET ? {
+          google: {
+            clientId: process.env.GOOGLE_CLIENT_ID,
+            clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+          },
+        } : {}),
+        ...(process.env.GITHUB_CLIENT_ID && process.env.GITHUB_CLIENT_SECRET ? {
+          github: {
+            clientId: process.env.GITHUB_CLIENT_ID,
+            clientSecret: process.env.GITHUB_CLIENT_SECRET,
+          },
+        } : {}),
       },
 
       // Session configuration
@@ -101,14 +106,19 @@ export default async function handler(req, res) {
   }
 
   try {
-    // Log OAuth callbacks for debugging
-    if (req.url.includes("/callback/")) {
-      console.log("📥 OAuth Callback:", {
-        url: req.url,
-        method: req.method,
-        query: req.query,
-      });
-    }
+    // Log ALL requests for debugging
+    console.log("🔍 Auth Request:", {
+      method: req.method,
+      url: req.url,
+      path: req.url,
+      headers: {
+        host: req.headers.host,
+        origin: req.headers.origin,
+        contentType: req.headers["content-type"],
+      },
+      hasBody: !!req.body,
+      bodyType: req.body ? typeof req.body : "none",
+    });
 
     // Get Better Auth instance
     const authInstance = getAuth();
