@@ -25,6 +25,17 @@ const config = {
   baseUrl: "/",
   trailingSlash: true,
 
+  // OpenAI ChatKit domain verification
+  headTags: [
+    {
+      tagName: 'meta',
+      attributes: {
+        name: 'openai-domain-verification',
+        content: 'domain_pk_69df616596788197b3a19559317f39360bfeee95ffaab7a5',
+      },
+    },
+  ],
+
   // GitHub pages deployment config.
   // If you aren't using GitHub pages, you don't need these.
   organizationName: "Muskanateeq",
