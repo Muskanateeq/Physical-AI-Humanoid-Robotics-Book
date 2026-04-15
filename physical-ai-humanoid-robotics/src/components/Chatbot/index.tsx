@@ -47,7 +47,12 @@ export default function Chatbot() {
   const { control } = useChatKit({
     api: {
       url: API_CONFIG.CHATKIT_URL,
-      domainKey: "localhost",
+      // Dynamic domainKey: localhost for development, production domain for production
+      domainKey: typeof window !== 'undefined' &&
+                 (window.location.hostname.includes('vercel.app') ||
+                  window.location.hostname.includes('neurobotics-ai-book'))
+        ? "neurobotics-ai-book.vercel.app"
+        : "localhost",
     },
     initialThread: initialThread,
     theme: {
