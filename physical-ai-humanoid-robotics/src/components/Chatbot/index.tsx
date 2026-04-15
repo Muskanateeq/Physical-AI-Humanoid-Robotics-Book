@@ -1,20 +1,68 @@
-import { ChatKit, useChatKit } from "@openai/chatkit-react";
 import React, { useState, useEffect } from "react";
-import { API_CONFIG } from "../../constants/api-url";
 import { useSession } from "../../lib/auth-client";
+import { useCustomChat } from "../../hooks/useCustomChat";
+import StartScreen from "./StartScreen";
+import MessageList from "./MessageList";
+import MessageInput from "./MessageInput";
+import HistoryView from "./HistoryView";
 
 export default function Chatbot() {
-  const [initialThread, setInitialThread] = useState<string | null>(null);
   const [isReady, setIsReady] = useState(false);
   const [isChatOpen, setIsChatOpen] = useState(false);
+  const [showHistory, setShowHistory] = useState(false);
 
   // Use Better Auth React hook for reactive session state
   const { data: session, isPending } = useSession();
 
-  // Load saved thread ID on mount
+  // Use custom chat hook
+  const { messages, isLoading, sendMessage, clearChat, threadId } = useCustomChat();
+
+  // Conversation history management
+  const [conversations, setConversations] = useState<Array<{
+    id: string;
+    title: string;
+    timestamp: number;
+  }>>([]);
+
+  // Load conversations from localStorage
   useEffect(() => {
-    const savedThread = localStorage.getItem("chatkit-thread-id");
-    setInitialThread(savedThread);
+    const loadConversations = () => {
+      try {
+        const saved = localStorage.getItem('chat-conversations-list');
+        if (saved) {
+          setConversations(JSON.parse(saved));
+        }
+      } catch (e) {
+        console.error('Failed to load conversations:', e);
+      }
+    };
+    loadConversations();
+  }, []);
+
+  // Save current conversation to history when messages change
+  useEffect(() => {
+    if (messages.length > 0 && threadId) {
+      const firstUserMessage = messages.find(m => m.role === 'user');
+      const title = firstUserMessage
+        ? (firstUserMessage.content.length > 50
+            ? firstUserMessage.content.substring(0, 50) + '...'
+            : firstUserMessage.content)
+        : 'New Conversation';
+
+      setConversations(prev => {
+        const existing = prev.find(c => c.id === threadId);
+        const updated = existing
+          ? prev.map(c => c.id === threadId ? { ...c, title, timestamp: Date.now() } : c)
+          : [{ id: threadId, title, timestamp: Date.now() }, ...prev];
+
+        localStorage.setItem('chat-conversations-list', JSON.stringify(updated));
+        return updated;
+      });
+    }
+  }, [messages, threadId]);
+
+  // Set ready state on mount
+  useEffect(() => {
     setIsReady(true);
   }, []);
 
@@ -44,63 +92,68 @@ export default function Chatbot() {
     setIsChatOpen(true);
   };
 
-  const { control } = useChatKit({
-    api: {
-      url: API_CONFIG.CHATKIT_URL,
-      // Dynamic domainKey: localhost for development, production domain for production
-      domainKey: typeof window !== 'undefined' &&
-                 (window.location.hostname.includes('vercel.app') ||
-                  window.location.hostname.includes('neurobotics-ai-book'))
-        ? "neurobotics-ai-book.vercel.app"
-        : "localhost",
-    },
-    initialThread: initialThread,
-    theme: {
-      colorScheme: "dark",
-      color: {
-        grayscale: { hue: 220, tint: 6, shade: -1 },
-        accent: { primary: "#6a5acd", level: 1 },
-      },
-      radius: "round",
-    },
-    startScreen: {
-      greeting: "Welcome to NeuroBotics AI Assistant!",
-      prompts: [
-        {
-          label: "About ROS2",
-          prompt:
-            "What is ROS2 and how does it work as the nervous system for robots?",
-        },
-        {
-          label: "Simulation Help",
-          prompt: "Explain Gazebo and Unity in robotics",
-        },
-        {
-          label: "AI Robot Brain",
-          prompt: "How does Nvidia Isaac help create an AI Robot Brain?",
-        },
-        {
-          label: "Vision Language Action",
-          prompt: "What is Vision Language Action in robotics?",
-        },
-      ],
-    },
-    composer: {
-      placeholder: "Ask anything about Physical AI and Robotics...",
-    },
-    onThreadChange: ({ threadId }) => {
-      console.log("Thread changed:", threadId);
-      if (threadId) {
-        localStorage.setItem("chatkit-thread-id", threadId);
+  // Handle new chat
+  const handleNewChat = () => {
+    clearChat();
+    setShowHistory(false); // Go back to chat view
+  };
+
+  // Handle select conversation from history
+  const handleSelectConversation = (conversationId: string) => {
+    try {
+      const saved = localStorage.getItem('custom-chat-thread');
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        if (parsed.threadId === conversationId) {
+          // Already loaded, just close history
+          setShowHistory(false);
+          return;
+        }
       }
-    },
-    onError: ({ error }) => {
-      console.error("ChatKit error:", error);
-    },
-    onReady: () => {
-      console.log("ChatKit is ready!");
-    },
-  });
+
+      // Load the selected conversation
+      const convKey = `chat-thread-${conversationId}`;
+      const convData = localStorage.getItem(convKey);
+      if (convData) {
+        localStorage.setItem('custom-chat-thread', convData);
+        setShowHistory(false);
+        window.location.reload(); // Reload to load the conversation
+      }
+    } catch (e) {
+      console.error('Failed to load conversation:', e);
+    }
+  };
+
+  // Handle delete conversation
+  const handleDeleteConversation = (conversationId: string) => {
+    try {
+      // Remove from list
+      setConversations(prev => {
+        const updated = prev.filter(c => c.id !== conversationId);
+        localStorage.setItem('chat-conversations-list', JSON.stringify(updated));
+        return updated;
+      });
+
+      // Remove conversation data
+      localStorage.removeItem(`chat-thread-${conversationId}`);
+
+      // If deleting current conversation, clear it
+      const current = localStorage.getItem('custom-chat-thread');
+      if (current) {
+        const parsed = JSON.parse(current);
+        if (parsed.threadId === conversationId) {
+          clearChat();
+        }
+      }
+    } catch (e) {
+      console.error('Failed to delete conversation:', e);
+    }
+  };
+
+  // Handle prompt click from start screen
+  const handlePromptClick = (prompt: string) => {
+    sendMessage(prompt);
+  };
 
   if (!isReady || isPending) {
     return null;
@@ -122,7 +175,7 @@ export default function Chatbot() {
             background: "linear-gradient(135deg, #6a5acd, #1e1b4b)",
             border: "none",
             cursor: "pointer",
-            boxShadow: "0 4px 20px rgba(76, 201, 240, 0.4)",
+            boxShadow: "0 4px 20px rgba(180, 165, 80, 0.4)",
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
@@ -172,7 +225,7 @@ export default function Chatbot() {
               height: "600px",
               maxWidth: "calc(100vw - 4rem)",
               maxHeight: "calc(100vh - 4rem)",
-              background: "#16213e",
+              background: "rgba(15, 23, 42, 0.95)",
               borderRadius: "1rem",
               boxShadow: "0 10px 50px rgba(0, 0, 0, 0.5)",
               display: "flex",
@@ -186,8 +239,8 @@ export default function Chatbot() {
             <div
               style={{
                 padding: "1rem 1.25rem",
-                background: "#0f3460",
-                borderBottom: "1px solid #1a1a2e",
+                background: "#5848b8",
+                borderBottom: "1px solid #6a5acd",
                 display: "flex",
                 justifyContent: "space-between",
                 alignItems: "center",
@@ -196,7 +249,7 @@ export default function Chatbot() {
             >
               <span
                 style={{
-                  color: "#6a5acd",
+                  color: "#ffffff",
                   fontWeight: "bold",
                   fontSize: "1rem",
                 }}
@@ -204,23 +257,42 @@ export default function Chatbot() {
                 NeuroBotics Assistant
               </span>
               <div style={{ display: "flex", gap: "0.5rem" }}>
+                {/* History Button */}
                 <button
-                  onClick={() => {
-                    localStorage.removeItem("chatkit-thread-id");
-                    window.location.reload();
-                  }}
+                  onClick={() => setShowHistory(true)}
+                  title="History"
                   style={{
-                    padding: "0.4rem 0.6rem",
-                    background: "#6a5acd",
-                    color: "white",
-                    border: "none",
+                    padding: "0.4rem",
+                    background: "transparent",
+                    color: "#ffffff",
+                    border: "1px solid #6a5acd",
                     borderRadius: "0.375rem",
                     cursor: "pointer",
-                    fontSize: "0.7rem",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    transition: "all 0.2s",
+                  }}
+                  onMouseOver={(e) => {
+                    e.currentTarget.style.background = "#6a5acd";
+                  }}
+                  onMouseOut={(e) => {
+                    e.currentTarget.style.background = "transparent";
                   }}
                 >
-                  New Chat
+                  <svg
+                    width="16"
+                    height="16"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                  >
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <polyline points="12 6 12 12 16 14"></polyline>
+                  </svg>
                 </button>
+                {/* Close Button */}
                 <button
                   onClick={() => setIsChatOpen(false)}
                   style={{
@@ -251,8 +323,38 @@ export default function Chatbot() {
             </div>
 
             {/* Chat Content */}
-            <div style={{ flex: 1, overflow: "hidden" }}>
-              <ChatKit control={control} className="h-full w-full" />
+            <div
+              style={{
+                flex: 1,
+                overflow: "hidden",
+                display: "flex",
+                flexDirection: "column",
+              }}
+            >
+              {showHistory ? (
+                <HistoryView
+                  conversations={conversations}
+                  onSelectConversation={handleSelectConversation}
+                  onDeleteConversation={handleDeleteConversation}
+                  onNewChat={handleNewChat}
+                  onBack={() => setShowHistory(false)}
+                />
+              ) : (
+                <>
+                  {messages.length === 0 ? (
+                    <StartScreen onPromptClick={handlePromptClick} />
+                  ) : (
+                    <MessageList messages={messages} isLoading={isLoading} />
+                  )}
+
+                  {/* Input always visible at bottom */}
+                  <MessageInput
+                    onSend={sendMessage}
+                    disabled={isLoading}
+                    placeholder="Ask anything about Physical AI and Robotics..."
+                  />
+                </>
+              )}
             </div>
           </div>
         </>
