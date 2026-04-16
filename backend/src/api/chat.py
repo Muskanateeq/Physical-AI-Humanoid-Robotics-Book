@@ -3,6 +3,8 @@ Chat API endpoint with RAG and OpenRouter integration.
 """
 import os
 import json
+import sys
+from pathlib import Path
 from typing import AsyncGenerator
 from fastapi import APIRouter, HTTPException
 from fastapi.responses import StreamingResponse
@@ -10,9 +12,10 @@ from pydantic import BaseModel
 import httpx
 from dotenv import load_dotenv
 
-# Import RAG service
-import sys
-sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(__file__))))
+# Add backend directory to path for RAG import
+backend_dir = Path(__file__).parent.parent.parent
+sys.path.insert(0, str(backend_dir))
+
 from rag import RAGService
 
 load_dotenv()
