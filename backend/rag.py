@@ -56,7 +56,7 @@ class RAGService:
 
         self.collection_name = os.getenv(
             "QDRANT_COLLECTION_NAME",
-            "physical_ai_humanoid_robotics",
+            "neurobotics-physical-ai-humanoid-robotics-book",
         )
 
         # MUST match book embedding model
