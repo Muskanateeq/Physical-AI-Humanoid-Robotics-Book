@@ -52,6 +52,9 @@ async def chat(request: ChatRequest):
         raise HTTPException(status_code=500, detail="OpenRouter API key not configured")
 
     try:
+        # Initialize is_book_related (used in response headers)
+        is_book_related = False
+
         # Check if user is asking about the creator/author
         import re
         creator_query = bool(
