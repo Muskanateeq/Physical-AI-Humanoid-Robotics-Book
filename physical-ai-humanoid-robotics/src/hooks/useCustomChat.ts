@@ -1,5 +1,6 @@
 import { useState, useCallback, useEffect } from 'react';
 import { API_CONFIG } from '../constants/api-url';
+import { useSession } from '../lib/auth-client';
 
 export interface Message {
   id: string;
@@ -24,9 +25,17 @@ export interface UseCustomChatReturn {
   threadId: string | null;
 }
 
-const STORAGE_KEY = 'custom-chat-thread';
+// Helper to get user-specific storage key
+function getUserStorageKey(userEmail: string | null | undefined, baseKey: string): string {
+  if (!userEmail) return baseKey; // Fallback for non-authenticated users
+  return `${baseKey}-${userEmail}`;
+}
 
 export function useCustomChat(): UseCustomChatReturn {
+  // Get current user session
+  const { data: session } = useSession();
+  const userEmail = session?.user?.email;
+
   const [state, setState] = useState<ChatState>({
     messages: [],
     isLoading: false,
@@ -34,9 +43,11 @@ export function useCustomChat(): UseCustomChatReturn {
     threadId: null,
   });
 
-  // Load messages from localStorage on mount
+  // Load messages from localStorage on mount or when user changes
   useEffect(() => {
+    const STORAGE_KEY = getUserStorageKey(userEmail, 'custom-chat-thread');
     const savedThread = localStorage.getItem(STORAGE_KEY);
+
     if (savedThread) {
       try {
         const parsed = JSON.parse(savedThread);
@@ -58,23 +69,26 @@ export function useCustomChat(): UseCustomChatReturn {
         threadId: generateThreadId(),
       }));
     }
-  }, []);
+  }, [userEmail]); // Re-run when user changes
 
   // Save messages to localStorage whenever they change
   useEffect(() => {
-    if (state.threadId && state.messages.length > 0) {
+    if (state.threadId && state.messages.length > 0 && userEmail) {
       const threadData = {
         threadId: state.threadId,
         messages: state.messages,
       };
 
+      const STORAGE_KEY = getUserStorageKey(userEmail, 'custom-chat-thread');
+      const THREAD_KEY = getUserStorageKey(userEmail, `chat-thread-${state.threadId}`);
+
       // Save to main storage (current conversation)
       localStorage.setItem(STORAGE_KEY, JSON.stringify(threadData));
 
       // Also save to thread-specific storage (for history)
-      localStorage.setItem(`chat-thread-${state.threadId}`, JSON.stringify(threadData));
+      localStorage.setItem(THREAD_KEY, JSON.stringify(threadData));
     }
-  }, [state.messages, state.threadId]);
+  }, [state.messages, state.threadId, userEmail]);
 
   const sendMessage = useCallback(async (content: string) => {
     if (!content.trim()) return;
@@ -190,6 +204,7 @@ export function useCustomChat(): UseCustomChatReturn {
   }, []);
 
   const clearChat = useCallback(() => {
+    const STORAGE_KEY = getUserStorageKey(userEmail, 'custom-chat-thread');
     localStorage.removeItem(STORAGE_KEY);
     setState({
       messages: [],
@@ -197,7 +212,7 @@ export function useCustomChat(): UseCustomChatReturn {
       error: null,
       threadId: generateThreadId(),
     });
-  }, []);
+  }, [userEmail]);
 
   return {
     messages: state.messages,

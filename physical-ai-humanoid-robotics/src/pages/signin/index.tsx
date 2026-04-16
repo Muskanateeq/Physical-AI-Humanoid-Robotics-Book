@@ -8,12 +8,21 @@ export default function SignIn() {
   const history = useHistory();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [acceptTerms, setAcceptTerms] = useState(false);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
   const handleEmailSignIn = async (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
+
+    // Check terms acceptance
+    if (!acceptTerms) {
+      setError("Please accept the terms and privacy policies to continue.");
+      return;
+    }
+
     setLoading(true);
 
     try {
@@ -27,8 +36,18 @@ export default function SignIn() {
       const callbackUrl = params.get("callbackUrl") || "/";
 
       history.push(callbackUrl);
-    } catch (err) {
-      setError("Invalid email or password. Please try again.");
+    } catch (err: any) {
+      // Better error messages based on error type
+      const errorMessage = err?.message || err?.toString() || "";
+
+      if (errorMessage.includes("not found") || errorMessage.includes("does not exist")) {
+        setError("Account not found. Please sign up first.");
+      } else if (errorMessage.includes("password") || errorMessage.includes("incorrect")) {
+        setError("Incorrect password. Please try again.");
+      } else {
+        setError("Invalid email or password. Please try again.");
+      }
+
       console.error("Sign in error:", err);
     } finally {
       setLoading(false);
@@ -111,16 +130,71 @@ export default function SignIn() {
               <label htmlFor="password" className={styles.label}>
                 Password
               </label>
-              <input
-                id="password"
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                placeholder="••••••••"
-                required
-                className={styles.input}
-                disabled={loading}
-              />
+              <div style={{ position: 'relative' }}>
+                <input
+                  id="password"
+                  type={showPassword ? "text" : "password"}
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  placeholder="••••••••"
+                  required
+                  className={styles.input}
+                  disabled={loading}
+                  style={{ paddingRight: '2.5rem' }}
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  style={{
+                    position: 'absolute',
+                    right: '0.75rem',
+                    top: '50%',
+                    transform: 'translateY(-50%)',
+                    background: 'transparent',
+                    border: 'none',
+                    cursor: 'pointer',
+                    padding: '0.25rem',
+                    display: 'flex',
+                    alignItems: 'center',
+                    color: '#9ca3af',
+                  }}
+                  aria-label={showPassword ? "Hide password" : "Show password"}
+                >
+                  {showPassword ? (
+                    // Eye slash icon (hide)
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                      <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path>
+                      <line x1="1" y1="1" x2="23" y2="23"></line>
+                    </svg>
+                  ) : (
+                    // Eye icon (show)
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                      <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                      <circle cx="12" cy="12" r="3"></circle>
+                    </svg>
+                  )}
+                </button>
+              </div>
+            </div>
+
+            <div className={styles.checkboxGroup}>
+              <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', cursor: 'pointer' }}>
+                <input
+                  type="checkbox"
+                  checked={acceptTerms}
+                  onChange={(e) => setAcceptTerms(e.target.checked)}
+                  style={{
+                    width: '1rem',
+                    height: '1rem',
+                    cursor: 'pointer',
+                    accentColor: '#6a5acd',
+                  }}
+                />
+                <span style={{ fontSize: '0.875rem', color: '#ffffff' }}>
+                  You accept terms and{' '}
+                  <span style={{ color: '#6a5acd', fontWeight: '500' }}>privacy</span> policies
+                </span>
+              </label>
             </div>
 
             <button

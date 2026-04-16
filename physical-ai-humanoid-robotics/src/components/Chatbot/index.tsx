@@ -13,6 +13,7 @@ export default function Chatbot() {
 
   // Use Better Auth React hook for reactive session state
   const { data: session, isPending } = useSession();
+  const userEmail = session?.user?.email;
 
   // Use custom chat hook
   const { messages, isLoading, sendMessage, clearChat, threadId } = useCustomChat();
@@ -24,24 +25,33 @@ export default function Chatbot() {
     timestamp: number;
   }>>([]);
 
-  // Load conversations from localStorage
+  // Helper to get user-specific storage key
+  const getUserStorageKey = (baseKey: string) => {
+    if (!userEmail) return baseKey;
+    return `${baseKey}-${userEmail}`;
+  };
+
+  // Load conversations from localStorage (user-specific)
   useEffect(() => {
     const loadConversations = () => {
       try {
-        const saved = localStorage.getItem('chat-conversations-list');
+        const storageKey = getUserStorageKey('chat-conversations-list');
+        const saved = localStorage.getItem(storageKey);
         if (saved) {
           setConversations(JSON.parse(saved));
+        } else {
+          setConversations([]); // Clear if no data for this user
         }
       } catch (e) {
         console.error('Failed to load conversations:', e);
       }
     };
     loadConversations();
-  }, []);
+  }, [userEmail]); // Reload when user changes
 
   // Save current conversation to history when messages change
   useEffect(() => {
-    if (messages.length > 0 && threadId) {
+    if (messages.length > 0 && threadId && userEmail) {
       const firstUserMessage = messages.find(m => m.role === 'user');
       const title = firstUserMessage
         ? (firstUserMessage.content.length > 50
@@ -55,11 +65,12 @@ export default function Chatbot() {
           ? prev.map(c => c.id === threadId ? { ...c, title, timestamp: Date.now() } : c)
           : [{ id: threadId, title, timestamp: Date.now() }, ...prev];
 
-        localStorage.setItem('chat-conversations-list', JSON.stringify(updated));
+        const storageKey = getUserStorageKey('chat-conversations-list');
+        localStorage.setItem(storageKey, JSON.stringify(updated));
         return updated;
       });
     }
-  }, [messages, threadId]);
+  }, [messages, threadId, userEmail]);
 
   // Set ready state on mount
   useEffect(() => {
@@ -101,7 +112,8 @@ export default function Chatbot() {
   // Handle select conversation from history
   const handleSelectConversation = (conversationId: string) => {
     try {
-      const saved = localStorage.getItem('custom-chat-thread');
+      const mainStorageKey = getUserStorageKey('custom-chat-thread');
+      const saved = localStorage.getItem(mainStorageKey);
       if (saved) {
         const parsed = JSON.parse(saved);
         if (parsed.threadId === conversationId) {
@@ -111,11 +123,11 @@ export default function Chatbot() {
         }
       }
 
-      // Load the selected conversation
-      const convKey = `chat-thread-${conversationId}`;
+      // Load the selected conversation (user-specific)
+      const convKey = getUserStorageKey(`chat-thread-${conversationId}`);
       const convData = localStorage.getItem(convKey);
       if (convData) {
-        localStorage.setItem('custom-chat-thread', convData);
+        localStorage.setItem(mainStorageKey, convData);
         setShowHistory(false);
         window.location.reload(); // Reload to load the conversation
       }
@@ -127,18 +139,21 @@ export default function Chatbot() {
   // Handle delete conversation
   const handleDeleteConversation = (conversationId: string) => {
     try {
-      // Remove from list
+      // Remove from list (user-specific)
       setConversations(prev => {
         const updated = prev.filter(c => c.id !== conversationId);
-        localStorage.setItem('chat-conversations-list', JSON.stringify(updated));
+        const listStorageKey = getUserStorageKey('chat-conversations-list');
+        localStorage.setItem(listStorageKey, JSON.stringify(updated));
         return updated;
       });
 
-      // Remove conversation data
-      localStorage.removeItem(`chat-thread-${conversationId}`);
+      // Remove conversation data (user-specific)
+      const convKey = getUserStorageKey(`chat-thread-${conversationId}`);
+      localStorage.removeItem(convKey);
 
       // If deleting current conversation, clear it
-      const current = localStorage.getItem('custom-chat-thread');
+      const mainStorageKey = getUserStorageKey('custom-chat-thread');
+      const current = localStorage.getItem(mainStorageKey);
       if (current) {
         const parsed = JSON.parse(current);
         if (parsed.threadId === conversationId) {
