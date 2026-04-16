@@ -3,8 +3,6 @@ Chat API endpoint with RAG and OpenRouter integration.
 """
 import os
 import json
-import sys
-from pathlib import Path
 from typing import AsyncGenerator
 from fastapi import APIRouter, HTTPException
 from fastapi.responses import StreamingResponse
@@ -12,18 +10,27 @@ from pydantic import BaseModel
 import httpx
 from dotenv import load_dotenv
 
-# Add backend directory to path for RAG import
-backend_dir = Path(__file__).parent.parent.parent
-sys.path.insert(0, str(backend_dir))
-
-from rag import RAGService
-
 load_dotenv()
 
+# Create router first (before any imports that might fail)
 router = APIRouter()
 
-# Initialize RAG service
-rag_service = RAGService()
+# Try to import and initialize RAG service
+RAG_AVAILABLE = False
+rag_service = None
+
+try:
+    import sys
+    from pathlib import Path
+    backend_dir = Path(__file__).parent.parent.parent
+    sys.path.insert(0, str(backend_dir))
+    from rag import RAGService
+    rag_service = RAGService()
+    RAG_AVAILABLE = True
+    print("✓ RAG service initialized successfully")
+except Exception as e:
+    print(f"⚠ RAG service not available: {e}")
+    print("  Chat will work without RAG context")
 
 # OpenRouter configuration
 OPENROUTER_API_KEY = os.getenv("OPENROUTER_API_KEY")
@@ -67,24 +74,30 @@ Muskan specializes in building intelligent AI systems and has deep expertise in 
 
 If you have questions about the book content or robotics topics, I'd be happy to help!"""
         else:
-            # Step 1: Get relevant context from RAG
-            relevant_results, is_book_related = rag_service.get_relevant_context(
-                query=request.message,
-                top_k=5
-            )
-
-            # Step 2: Format context for LLM
-            if is_book_related and relevant_results:
-                system_prompt = rag_service.format_context_for_llm(
+            # Step 1: Get relevant context from RAG (if available)
+            if RAG_AVAILABLE and rag_service:
+                relevant_results, is_book_related = rag_service.get_relevant_context(
                     query=request.message,
-                    results=relevant_results
+                    top_k=5
                 )
-            else:
-                # General assistant mode
-                system_prompt = """You are NeuroBotics AI Assistant, built and trained by Muskan Atiq (fullstack agentic AI engineer and AI & Data Science expert), a friendly expert in Physical AI and Humanoid Robotics.
+
+                # Step 2: Format context for LLM
+                if is_book_related and relevant_results:
+                    system_prompt = rag_service.format_context_for_llm(
+                        query=request.message,
+                        results=relevant_results
+                    )
+                else:
+                    # General assistant mode
+                    system_prompt = """You are NeuroBotics AI Assistant, built and trained by Muskan Atiq (fullstack agentic AI engineer and AI & Data Science expert), a friendly expert in Physical AI and Humanoid Robotics.
 The user's question is not directly related to the Physical AI and Humanoid Robotics book content.
 Provide helpful, accurate information about robotics, AI, or related topics.
 If the question is completely unrelated to robotics/AI, politely explain your specialization and offer to help with robotics topics.
+If asked about the author or creator, mention Muskan Atiq. LinkedIn: https://www.linkedin.com/in/muskan-muhammad-atiq-agentic-ai-expert"""
+            else:
+                # RAG not available, use general mode
+                system_prompt = """You are NeuroBotics AI Assistant, built and trained by Muskan Atiq (fullstack agentic AI engineer and AI & Data Science expert), a friendly expert in Physical AI and Humanoid Robotics.
+Provide helpful, accurate information about robotics, AI, or related topics.
 If asked about the author or creator, mention Muskan Atiq. LinkedIn: https://www.linkedin.com/in/muskan-muhammad-atiq-agentic-ai-expert"""
 
         # Step 3: Stream response from OpenRouter
