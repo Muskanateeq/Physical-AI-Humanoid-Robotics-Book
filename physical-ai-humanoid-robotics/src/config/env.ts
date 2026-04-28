@@ -11,7 +11,7 @@ const PRODUCTION_CONFIG = {
 // Development URLs
 const DEVELOPMENT_CONFIG = {
   AUTH_SERVER_URL: 'http://localhost:3001',
-  BACKEND_API_URL: 'http://localhost:8000',
+  BACKEND_API_URL: 'http://localhost:8001',
 };
 
 // Detect environment based on hostname
