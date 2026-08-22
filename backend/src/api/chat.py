@@ -35,7 +35,20 @@ except Exception as e:
 # OpenRouter configuration
 OPENROUTER_API_KEY = os.getenv("OPENROUTER_API_KEY")
 OPENROUTER_BASE_URL = "https://openrouter.ai/api/v1"
-DEFAULT_MODEL = os.getenv("OPENROUTER_MODEL", "mistralai/mistral-small-3.1-24b-instruct")
+DEFAULT_MODEL = os.getenv("OPENROUTER_MODEL", "openrouter/free")
+FALLBACK_MODELS = tuple(
+    model.strip()
+    for model in os.getenv(
+        "OPENROUTER_FALLBACK_MODELS",
+        "nvidia/nemotron-3-ultra-550b-a55b:free",
+    ).split(",")
+    if model.strip()
+)
+
+
+def get_model_candidates(primary_model: str) -> list[str]:
+    """Return the primary and fallback models in priority order, without duplicates."""
+    return list(dict.fromkeys((primary_model, *FALLBACK_MODELS)))
 
 
 class ChatRequest(BaseModel):
@@ -106,11 +119,36 @@ If asked about the author or creator, mention Muskan Atiq. LinkedIn: https://www
         # Step 3: Stream response from OpenRouter
         async def generate_stream() -> AsyncGenerator[bytes, None]:
             async with httpx.AsyncClient(timeout=60.0) as client:
-                # OpenRouter can occasionally send a successful HTTP response
-                # followed by a terminal `finish_reason: error` from a provider.
-                # Retry only once in that case, since an SSE stream cannot resume.
+                model_candidates = get_model_candidates(request.model)
+                candidate_index = 0
+
+                # OpenRouter normally handles model fallbacks before streaming.
+                # If a provider fails after streaming has started, retry once with
+                # the next model and tell the client to discard the partial text.
                 for attempt in range(2):
                     retry_requested = False
+                    remaining_models = model_candidates[candidate_index:]
+
+                    if not remaining_models:
+                        yield b'data: {"type":"error","message":"No AI model is currently available. Please try again shortly."}\n\n'
+                        break
+
+                    request_body = {
+                        "model": remaining_models[0],
+                        "messages": [
+                            {"role": "system", "content": system_prompt},
+                            {"role": "user", "content": request.message}
+                        ],
+                        "stream": True,
+                        "temperature": 0.7,
+                        "max_tokens": 8000,
+                        "provider": {"allow_fallbacks": True}
+                    }
+
+                    # OpenRouter tries these models in order when the primary
+                    # model/provider fails before response streaming begins.
+                    if len(remaining_models) > 1:
+                        request_body["models"] = remaining_models[1:]
 
                     async with client.stream(
                         "POST",
@@ -121,23 +159,17 @@ If asked about the author or creator, mention Muskan Atiq. LinkedIn: https://www
                             "HTTP-Referer": os.getenv("APP_URL", "https://neurobotics-ai-book.vercel.app"),
                             "X-Title": "NeuroBotics AI Assistant"
                         },
-                        json={
-                            "model": request.model,
-                            "messages": [
-                                {"role": "system", "content": system_prompt},
-                                {"role": "user", "content": request.message}
-                            ],
-                            "stream": True,
-                            "temperature": 0.7,
-                            "max_tokens": 8000
-                        }
+                        json=request_body
                     ) as response:
                         if response.status_code != 200:
-                            error_text = await response.aread()
-                            raise HTTPException(
-                                status_code=response.status_code,
-                                detail=f"OpenRouter API error: {error_text.decode()}"
-                            )
+                            await response.aread()
+                            if attempt == 0 and len(remaining_models) > 1:
+                                candidate_index += 1
+                                retry_requested = True
+                                yield b'data: {"type":"retry"}\n\n'
+                            else:
+                                yield b'data: {"type":"error","message":"The AI service is temporarily unavailable. Please try again."}\n\n'
+                            continue
 
                         async for line in response.aiter_lines():
                             if not line.startswith("data: "):
@@ -149,18 +181,29 @@ If asked about the author or creator, mention Muskan Atiq. LinkedIn: https://www
 
                             try:
                                 event = json.loads(data)
-                                finish_reason = event.get("choices", [{}])[0].get("finish_reason")
+                                choices = event.get("choices") or []
+                                first_choice = choices[0] if choices else {}
+                                finish_reason = first_choice.get("finish_reason")
+                                provider_error = event.get("error")
                             except (json.JSONDecodeError, IndexError, AttributeError):
                                 # Forward non-standard provider events unchanged.
                                 event = None
                                 finish_reason = None
+                                provider_error = None
 
-                            if finish_reason == "error":
-                                if attempt == 0:
+                            if finish_reason == "error" or provider_error:
+                                failed_model = event.get("model") if event else None
+                                if failed_model in model_candidates:
+                                    candidate_index = model_candidates.index(failed_model) + 1
+                                else:
+                                    candidate_index += 1
+
+                                has_fallback = candidate_index < len(model_candidates)
+                                if attempt == 0 and has_fallback:
                                     retry_requested = True
                                     yield b'data: {"type":"retry"}\n\n'
                                 else:
-                                    yield b'data: {"type":"error","message":"The AI provider interrupted the response. Please try again."}\n\n'
+                                    yield b'data: {"type":"error","message":"All configured AI models are temporarily unavailable. Please try again shortly."}\n\n'
                                 break
 
                             # Forward the complete SSE data event as-is.
@@ -191,5 +234,6 @@ async def chat_health():
         "status": "healthy",
         "rag_enabled": True,
         "openrouter_configured": bool(OPENROUTER_API_KEY),
-        "model": DEFAULT_MODEL
+        "model": DEFAULT_MODEL,
+        "fallback_models": FALLBACK_MODELS
     }

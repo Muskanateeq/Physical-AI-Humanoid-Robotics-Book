@@ -85,7 +85,8 @@ BETTER_AUTH_JWKS_URL=https://neurobotics-ai-book.vercel.app/api/auth/jwks
 
 # OpenRouter
 OPENROUTER_API_KEY=YOUR_OPENROUTER_KEY
-OPENROUTER_MODEL=mistralai/mistral-small-3.1-24b-instruct
+OPENROUTER_MODEL=openrouter/free
+OPENROUTER_FALLBACK_MODELS=nvidia/nemotron-3-ultra-550b-a55b:free
 
 # Qdrant Vector Database
 QDRANT_URL=YOUR_QDRANT_URL
