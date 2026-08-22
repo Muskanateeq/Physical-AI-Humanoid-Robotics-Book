@@ -5,13 +5,13 @@
 const PRODUCTION_CONFIG = {
   // Empty string = same domain (Vercel will handle /api/auth/* via serverless function)
   AUTH_SERVER_URL: '',
-  BACKEND_API_URL: 'https://physical-ai-humanoid-robotics-book-7mgx.onrender.com',
+  BACKEND_API_URL: 'https://dzon-developer-physical-ai-humanoid-robotics-backend.hf.space',
 };
 
 // Development URLs
 const DEVELOPMENT_CONFIG = {
   AUTH_SERVER_URL: 'http://localhost:3001',
-  BACKEND_API_URL: 'http://localhost:8001',
+  BACKEND_API_URL: 'https://dzon-developer-physical-ai-humanoid-robotics-backend.hf.space',
 };
 
 // Detect environment based on hostname

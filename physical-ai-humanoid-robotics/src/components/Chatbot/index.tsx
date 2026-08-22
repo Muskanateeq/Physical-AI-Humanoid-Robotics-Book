@@ -16,7 +16,7 @@ export default function Chatbot() {
   const userEmail = session?.user?.email;
 
   // Use custom chat hook
-  const { messages, isLoading, sendMessage, clearChat, threadId } = useCustomChat();
+  const { messages, isLoading, error, sendMessage, clearChat, threadId } = useCustomChat();
 
   // Conversation history management
   const [conversations, setConversations] = useState<Array<{
@@ -360,6 +360,23 @@ export default function Chatbot() {
                     <StartScreen onPromptClick={handlePromptClick} />
                   ) : (
                     <MessageList messages={messages} isLoading={isLoading} />
+                  )}
+
+                  {error && (
+                    <div
+                      role="alert"
+                      style={{
+                        margin: '0 1rem 0.75rem',
+                        padding: '0.625rem 0.75rem',
+                        border: '1px solid #ef4444',
+                        borderRadius: '0.5rem',
+                        background: 'rgba(127, 29, 29, 0.35)',
+                        color: '#fecaca',
+                        fontSize: '0.85rem',
+                      }}
+                    >
+                      {error}
+                    </div>
                   )}
 
                   {/* Input always visible at bottom */}

@@ -106,40 +106,68 @@ If asked about the author or creator, mention Muskan Atiq. LinkedIn: https://www
         # Step 3: Stream response from OpenRouter
         async def generate_stream() -> AsyncGenerator[bytes, None]:
             async with httpx.AsyncClient(timeout=60.0) as client:
-                async with client.stream(
-                    "POST",
-                    f"{OPENROUTER_BASE_URL}/chat/completions",
-                    headers={
-                        "Authorization": f"Bearer {OPENROUTER_API_KEY}",
-                        "Content-Type": "application/json",
-                        "HTTP-Referer": os.getenv("APP_URL", "https://neurobotics-ai-book.vercel.app"),
-                        "X-Title": "NeuroBotics AI Assistant"
-                    },
-                    json={
-                        "model": request.model,
-                        "messages": [
-                            {"role": "system", "content": system_prompt},
-                            {"role": "user", "content": request.message}
-                        ],
-                        "stream": True,
-                        "temperature": 0.7,
-                        "max_tokens": 2000
-                    }
-                ) as response:
-                    if response.status_code != 200:
-                        error_text = await response.aread()
-                        raise HTTPException(
-                            status_code=response.status_code,
-                            detail=f"OpenRouter API error: {error_text.decode()}"
-                        )
+                # OpenRouter can occasionally send a successful HTTP response
+                # followed by a terminal `finish_reason: error` from a provider.
+                # Retry only once in that case, since an SSE stream cannot resume.
+                for attempt in range(2):
+                    retry_requested = False
 
-                    async for line in response.aiter_lines():
-                        if line.startswith("data: "):
+                    async with client.stream(
+                        "POST",
+                        f"{OPENROUTER_BASE_URL}/chat/completions",
+                        headers={
+                            "Authorization": f"Bearer {OPENROUTER_API_KEY}",
+                            "Content-Type": "application/json",
+                            "HTTP-Referer": os.getenv("APP_URL", "https://neurobotics-ai-book.vercel.app"),
+                            "X-Title": "NeuroBotics AI Assistant"
+                        },
+                        json={
+                            "model": request.model,
+                            "messages": [
+                                {"role": "system", "content": system_prompt},
+                                {"role": "user", "content": request.message}
+                            ],
+                            "stream": True,
+                            "temperature": 0.7,
+                            "max_tokens": 8000
+                        }
+                    ) as response:
+                        if response.status_code != 200:
+                            error_text = await response.aread()
+                            raise HTTPException(
+                                status_code=response.status_code,
+                                detail=f"OpenRouter API error: {error_text.decode()}"
+                            )
+
+                        async for line in response.aiter_lines():
+                            if not line.startswith("data: "):
+                                continue
+
                             data = line[6:]  # Remove "data: " prefix
                             if data.strip() == "[DONE]":
                                 break
-                            # Forward the SSE data as-is
+
+                            try:
+                                event = json.loads(data)
+                                finish_reason = event.get("choices", [{}])[0].get("finish_reason")
+                            except (json.JSONDecodeError, IndexError, AttributeError):
+                                # Forward non-standard provider events unchanged.
+                                event = None
+                                finish_reason = None
+
+                            if finish_reason == "error":
+                                if attempt == 0:
+                                    retry_requested = True
+                                    yield b'data: {"type":"retry"}\n\n'
+                                else:
+                                    yield b'data: {"type":"error","message":"The AI provider interrupted the response. Please try again."}\n\n'
+                                break
+
+                            # Forward the complete SSE data event as-is.
                             yield f"data: {data}\n\n".encode()
+
+                    if not retry_requested:
+                        break
 
         return StreamingResponse(
             generate_stream(),

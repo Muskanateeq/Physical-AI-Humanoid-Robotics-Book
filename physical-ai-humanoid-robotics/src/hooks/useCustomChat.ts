@@ -150,46 +150,97 @@ export function useCustomChat(): UseCustomChatReturn {
         ],
       }));
 
+      // A browser ReadableStream chunk is not the same thing as an SSE event. An
+      // event (and its JSON payload) may be split across multiple chunks, so keep
+      // incomplete data until the SSE blank-line delimiter arrives.
+      let sseBuffer = '';
+
+      const processSseEvent = (event: string) => {
+        const data = event
+          .split(/\r?\n/)
+          .filter(line => line.startsWith('data:'))
+          .map(line => line.slice(5).trimStart())
+          .join('\n');
+
+        if (!data || data === '[DONE]') return;
+
+        try {
+          const parsed = JSON.parse(data);
+          const choice = parsed.choices?.[0];
+
+          if (parsed.type === 'retry') {
+            assistantContent = '';
+            setState(prev => ({
+              ...prev,
+              messages: prev.messages.map(msg =>
+                msg.id === assistantMessageId ? { ...msg, content: '' } : msg
+              ),
+            }));
+            return;
+          }
+
+          if (parsed.type === 'error') {
+            setState(prev => ({
+              ...prev,
+              error: parsed.message || 'The AI response was interrupted. Please try again.',
+            }));
+            return;
+          }
+
+          if (choice?.finish_reason === 'error') {
+            console.error('Chat provider ended the stream with an error:', parsed);
+            setState(prev => ({
+              ...prev,
+              error: 'The AI response was interrupted. Please try again.',
+            }));
+            return;
+          }
+
+          // Try OpenRouter format first
+          const delta = choice?.delta?.content || choice?.text || parsed.content;
+
+          if (delta) {
+            assistantContent += delta;
+
+            // Update assistant message with accumulated content
+            setState(prev => ({
+              ...prev,
+              messages: prev.messages.map(msg =>
+                msg.id === assistantMessageId
+                  ? { ...msg, content: assistantContent }
+                  : msg
+              ),
+            }));
+          }
+        } catch (e) {
+          // A complete SSE event should always contain valid JSON. Keep the
+          // partial assistant response instead of crashing the chat UI.
+          console.warn('Failed to parse complete SSE event:', data, e);
+        }
+      };
+
       // Read stream
       while (true) {
         const { done, value } = await reader.read();
-        if (done) break;
-
-        const chunk = decoder.decode(value);
-        const lines = chunk.split('\n');
-
-        for (const line of lines) {
-          if (line.startsWith('data: ')) {
-            const data = line.slice(6);
-            if (data.trim() === '[DONE]') continue;
-
-            try {
-              const parsed = JSON.parse(data);
-
-              // Try OpenRouter format first
-              const delta = parsed.choices?.[0]?.delta?.content ||
-                           parsed.choices?.[0]?.text ||
-                           parsed.content;
-
-              if (delta) {
-                assistantContent += delta;
-
-                // Update assistant message with accumulated content
-                setState(prev => ({
-                  ...prev,
-                  messages: prev.messages.map(msg =>
-                    msg.id === assistantMessageId
-                      ? { ...msg, content: assistantContent }
-                      : msg
-                  ),
-                }));
-              }
-            } catch (e) {
-              // Skip invalid JSON
-              console.warn('Failed to parse SSE data:', data, e);
-            }
-          }
+        if (done) {
+          sseBuffer += decoder.decode();
+          break;
         }
+
+        sseBuffer += decoder.decode(value, { stream: true });
+        const events = sseBuffer.split(/\r?\n\r?\n/);
+        sseBuffer = events.pop() ?? '';
+
+        for (const event of events) {
+          processSseEvent(event);
+        }
+      }
+
+      // Some proxies omit the final blank line. At EOF it is safe to process
+      // the final event; malformed provider data is reported without losing the
+      // valid text already received.
+      if (sseBuffer.trim()) {
+        processSseEvent(sseBuffer);
       }
 
       setState(prev => ({ ...prev, isLoading: false }));
