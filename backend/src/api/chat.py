@@ -45,6 +45,19 @@ FALLBACK_MODELS = tuple(
     if model.strip()
 )
 
+PLAIN_TEXT_RESPONSE_RULES = """Response formatting requirements:
+
+1. Return clean, professional plain text only.
+2. Do not use Markdown syntax, Markdown headings, emphasis markers, code fences, or Markdown tables.
+3. Write headings as normal text without decorative symbols.
+4. Use numbered lists with normal numbers when a list is needed.
+5. Do not use bullets, hashtags, asterisks, underscores, backticks, or tildes for formatting.
+6. Keep paragraphs readable with appropriate spacing and normal punctuation.
+7. Do not add unnecessary symbols before or after text.
+8. Express emphasis naturally through wording instead of special formatting.
+9. Before responding, review the complete answer and remove any remaining Markdown formatting.
+10. The final answer must look like clean human-written plain text."""
+
 
 def get_model_candidates(primary_model: str) -> list[str]:
     """Return the primary and fallback models in priority order, without duplicates."""
@@ -115,6 +128,9 @@ If asked about the author or creator, mention Muskan Atiq. LinkedIn: https://www
                 system_prompt = """You are NeuroBotics AI Assistant, built and trained by Muskan Atiq (fullstack agentic AI engineer and AI & Data Science expert), a friendly expert in Physical AI and Humanoid Robotics.
 Provide helpful, accurate information about robotics, AI, or related topics.
 If asked about the author or creator, mention Muskan Atiq. LinkedIn: https://www.linkedin.com/in/muskan-muhammad-atiq-agentic-ai-expert"""
+
+        # Apply the same response style to creator, RAG, and general answers.
+        system_prompt = f"{system_prompt.rstrip()}\n\n{PLAIN_TEXT_RESPONSE_RULES}"
 
         # Step 3: Stream response from OpenRouter
         async def generate_stream() -> AsyncGenerator[bytes, None]:
